@@ -1,0 +1,4 @@
+/node_modules
+
+# Ignore config file
+/db/config.js
