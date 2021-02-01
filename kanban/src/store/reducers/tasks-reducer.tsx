@@ -1,0 +1,39 @@
+interface Task {
+  id: number;
+  name: string;
+  description: string;
+  severity: number;
+  column: number;
+}
+
+interface State {
+  loading: boolean;
+  dragOverColumn: number;
+  tasks: { [id: number]: Task };
+}
+
+const tasksReducer = (state: State, action: any) => {
+  switch (action.type) {
+    case "DRAG_UPDATE":
+      console.log(`Dragging over column ${action.column}`);
+      return { ...state, dragOverColumn: action.column };
+    case "TASK_UPDATE":
+      const taskToUPD = Object.values(state.tasks).filter(
+        (task) => task.id === action.taskID
+      )[0];
+      console.log(`Updating tas ${taskToUPD.id} from column ${taskToUPD.column} to ${state.dragOverColumn}`)
+      taskToUPD.column = state.dragOverColumn;
+      const tasksUPD = {...state.tasks, [taskToUPD.id]: taskToUPD}
+      return { ...state, tasks: tasksUPD };
+    case "TASK_FETCH_START":
+      return { ...state, loading: true };
+    case "TASK_FETCH":
+      return { ...state, loading: false };
+    case "ADD_TASK":
+      return {...state, tasks: {...state.tasks, [action.newTask.id]: action.newTask }}
+    default:
+      return state;
+  }
+};
+
+export default tasksReducer;

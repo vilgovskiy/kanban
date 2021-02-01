@@ -1,0 +1,20 @@
+.KanBanColumn {
+    width: 18%;
+    height: 70vh;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 3px;
+    border: 2px solid black;
+    margin: 2px;
+}
+
+.KanBanColumn h3 {
+    height: 10%;
+}
+
+.TasksSection {
+    height: 90%;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    padding: 2px;
+}
