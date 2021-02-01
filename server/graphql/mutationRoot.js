@@ -100,6 +100,28 @@ const MutationRoot = new graphql.GraphQLObjectType({
         }
       },
     },
+    add_task: {
+      type: Task,
+      args: {
+        title: { type: graphql.GraphQLNonNull(graphql.GraphQLString) },
+        description: { type: graphql.GraphQLNonNull(graphql.GraphQLString) },
+        severity: { type: graphql.GraphQLNonNull(graphql.GraphQLInt) },
+        column: { type: graphql.GraphQLNonNull(graphql.GraphQLInt) },
+        board: { type: graphql.GraphQLNonNull(graphql.GraphQLInt)}
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        try {
+          return (
+            await dbClient.query(
+              "INSERT INTO tasks (title, description, severity, board_column, board) VALUES ($1, $2, $3, $4, $5) RETURNING task_id as id, title, description as desc, severity, board_column as column",
+              [args.title, args.description, args.severity, args.column, args.board]
+            )
+          ).rows[0];
+        } catch (err) {
+          throw new Error(`Failed to insert new user ${err}`);
+        }
+      },
+    },
   }),
 });
 

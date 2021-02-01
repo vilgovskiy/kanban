@@ -126,6 +126,14 @@ const Task = new graphql.GraphQLObjectType({
         },
       },
     },
+    column: {
+      type: graphql.GraphQLInt,
+      extensions: {
+        joinMonster: {
+          sqlColumn: "board_column",
+        },
+      },
+    },
     board: {
       type: Board,
       extensions: {
