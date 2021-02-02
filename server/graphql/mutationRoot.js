@@ -113,7 +113,7 @@ const MutationRoot = new graphql.GraphQLObjectType({
         try {
           return (
             await dbClient.query(
-              "INSERT INTO tasks (title, description, severity, board_column, board) VALUES ($1, $2, $3, $4, $5) RETURNING task_id as id, title, description as desc, severity, board_column as column",
+              "INSERT INTO tasks (title, description, severity, board_column, board) VALUES ($1, $2, $3, $4, $5) RETURNING task_id as id, title, description, severity, board_column as column",
               [args.title, args.description, args.severity, args.column, args.board]
             )
           ).rows[0];
