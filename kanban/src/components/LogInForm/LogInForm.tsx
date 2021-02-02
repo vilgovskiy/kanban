@@ -1,5 +1,7 @@
 import axios from "../../axios-api";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import Spinner from "../UI/Spinner/Spinner";
+import { UserContext } from "../../context/user-context";
 
 interface FormState {
   username: string;
@@ -11,7 +13,11 @@ const initState = {
   password: "",
 };
 const LogInForm: React.FC = () => {
+  const { userDispatch } = useContext(UserContext);
   const [logInForm, setLogInForm] = useState<FormState>(initState);
+  const [error, setError] = useState<string | null>(null);
+
+  const [loading, setLoading] = useState(false);
 
   const inputChangeHandler = (
     event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
@@ -24,27 +30,43 @@ const LogInForm: React.FC = () => {
 
   const logInHandler = (event: React.FormEvent) => {
     event.preventDefault();
+    setLoading(true);
     axios
       .get(
-        `/api?query={auth(name:"${logInForm.username}",password:"${logInForm.password}"){id,name,boards{id,name,owner{id}}}}`
+        `/api?query={auth(name:"${logInForm.username}",password:"${logInForm.password}"){id,name,boards{id,name,,owner{id}}}}`
       )
       .then((resp) => {
-        console.log(resp);
+        const respData = resp.data.data;
+        if (respData.auth !== null) {
+          userDispatch({ type: "LOG_IN", user: respData.auth });
+        } else {
+          console.log("Setting error");
+          setError("Could not log in, please check you username/password");
+          setLoading(false);
+        }
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
   const signupHandler = () => {
-    let data = {"query": `mutation{add_user(name:"${logInForm.username}",password:"${logInForm.password}"){id,name}}`};
-    axios.post("/api", data)
-    .then(resp => console.log(resp))
-    .catch(err => console.log(err));
+    setLoading(true);
+    let data = {
+      query: `mutation{add_user(name:"${logInForm.username}",password:"${logInForm.password}"){id,name}}`,
+    };
+    axios
+      .post("/api", data)
+      .then((resp) => console.log(resp))
+      .catch((err) => console.log(err));
   };
 
   return (
     <div>
+      <div className="LogInErrors">
+        {error !== null ? <p>{error}</p> : null}
+      </div>
       <form onSubmit={logInHandler}>
         <label>Username</label>
         <input
@@ -63,6 +85,7 @@ const LogInForm: React.FC = () => {
         <button>Log in</button>
       </form>
       <button onClick={signupHandler}>Sign up</button>
+      {loading ? <Spinner /> : null}
     </div>
   );
 };
