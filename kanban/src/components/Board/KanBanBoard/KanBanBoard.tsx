@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { TasksContext } from "../../../context/tasks-context";
 import TaskForm from "../../TaskForm/TaskForm";
 import KanbanColumn from "../KanBanColumn/KanBanColumn";
@@ -44,13 +44,14 @@ const Board: React.FC<Props> = (props) => {
     taskID: number
   ) => {
     event.preventDefault();
+    // here will be API call to update task
     tasksDispatch({ type: "TASK_UPDATE", taskID: taskID });
   };
 
   const openNewTaskFormHandler = () => setTaskForm(true)
   const closeNewTaskFormHandler = () => setTaskForm(false)
 
-  let newTaskForm = taskForm ? <TaskForm formCloseHandler={closeNewTaskFormHandler} /> : null
+  let newTaskForm = taskForm ? <TaskForm board_id={props.id} formCloseHandler={closeNewTaskFormHandler} /> : null
 
   return (
     <div>
