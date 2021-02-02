@@ -30,7 +30,7 @@ const tasksReducer = (state: State, action: any) => {
     case "TASKS_FETCH_START":
       return { ...state, loading: true };
     case "TASKS_FETCH":
-      return { ...state, loading: false };
+      return { ...state, tasks: action.tasks, loading: false };
     case "ADD_TASK":
       return {
         ...state,
