@@ -1,6 +1,6 @@
 interface Task {
   id: number;
-  name: string;
+  title: string;
   description: string;
   severity: number;
   column: number;
@@ -21,16 +21,21 @@ const tasksReducer = (state: State, action: any) => {
       const taskToUPD = Object.values(state.tasks).filter(
         (task) => task.id === action.taskID
       )[0];
-      console.log(`Updating tas ${taskToUPD.id} from column ${taskToUPD.column} to ${state.dragOverColumn}`)
+      console.log(
+        `Updating tas ${taskToUPD.id} from column ${taskToUPD.column} to ${state.dragOverColumn}`
+      );
       taskToUPD.column = state.dragOverColumn;
-      const tasksUPD = {...state.tasks, [taskToUPD.id]: taskToUPD}
+      const tasksUPD = { ...state.tasks, [taskToUPD.id]: taskToUPD };
       return { ...state, tasks: tasksUPD };
-    case "TASK_FETCH_START":
+    case "TASKS_FETCH_START":
       return { ...state, loading: true };
-    case "TASK_FETCH":
+    case "TASKS_FETCH":
       return { ...state, loading: false };
     case "ADD_TASK":
-      return {...state, tasks: {...state.tasks, [action.newTask.id]: action.newTask }}
+      return {
+        ...state,
+        tasks: { ...state.tasks, [action.newTask.id]: action.newTask },
+      };
     default:
       return state;
   }

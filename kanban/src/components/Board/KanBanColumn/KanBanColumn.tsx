@@ -4,7 +4,7 @@ import "./KanBanColumn.css";
 
 interface Task {
   id: number;
-  name: string;
+  title: string;
   description: string;
   severity: number;
   column: number;

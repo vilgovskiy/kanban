@@ -110,7 +110,7 @@ const Task = new graphql.GraphQLObjectType({
         },
       },
     },
-    desc: {
+    description: {
       type: graphql.GraphQLString,
       extensions: {
         joinMonster: {

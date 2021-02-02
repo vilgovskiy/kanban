@@ -7,28 +7,28 @@ const initState = {
   tasks: {
     0: {
       id: 0,
-      name: "task0",
+      title: "task0",
       description: "Task 0",
       severity: 0,
       column: 1,
     },
     1: {
       id: 1,
-      name: "task1",
+      title: "task1",
       description: "Task 1",
       severity: 0,
       column: 0,
     },
     2: {
       id: 2,
-      name: "task2",
+      title: "task2",
       description: "Task 2",
       severity: 0,
       column: 1,
     },
     3: {
       id: 3,
-      name: "task3",
+      title: "task3",
       description: "Task 3",
       severity: 0,
       column: 3,
@@ -38,7 +38,7 @@ const initState = {
 
 interface Task {
   id: number;
-  name: string;
+  title: string;
   description: string;
   severity: number;
   column: number;

@@ -3,7 +3,7 @@ import "./KanBanCard.css"
 
 interface Task {
     id: number;
-    name: string;
+    title: string;
     description: string;
     severity: number;
     column: number;
@@ -17,7 +17,7 @@ interface Props {
 const KanBanCard = (props:Props) => {
 
     return <div className="KanBanCard" draggable={true} onDragEnd={e => props.onDragEnd(e, props.task.id)}>
-        <div><h4>{props.task.name}</h4></div>
+        <div><h4>{props.task.title}</h4></div>
         <div>{props.task.description}</div>
     </div>
 }

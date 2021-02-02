@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { TasksContext } from "../../context/tasks-context";
 
 interface TaskFormType {
-  name: string;
+  title: string;
   description: string;
   severity: number;
 }
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const initFormState = {
-  name: "",
+  title: "",
   description: "",
   severity: 0,
 };
@@ -48,9 +48,9 @@ const TaskForm = (props: Props) => {
         <label>Name</label>
         <input
           type="text"
-          placeholder="Name"
-          value={taskForm.name}
-          onChange={(event) => inputChangeHandler(event, "name")}
+          placeholder="Title"
+          value={taskForm.title}
+          onChange={(event) => inputChangeHandler(event, "title")}
         />
       </div>
       <div className="InputElement">
