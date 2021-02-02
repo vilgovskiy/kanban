@@ -3,7 +3,7 @@ import "./App.css";
 import KanBan from "./components/Board/KanBan";
 import LogInForm from "./components/LogInForm/LogInForm";
 import TasksContextProvider from "./context/tasks-context";
-import UserContextProvider, { UserContext } from "./context/user-context";
+import {UserContext} from "./context/user-context";
 
 const App: React.FC = () => {
   const { userState } = useContext(UserContext)

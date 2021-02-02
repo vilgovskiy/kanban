@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import KanBanBoard from "./KanBanBoard/KanBanBoard";
-import axios from "../../axios-api";
 import { UserContext } from "../../context/user-context";
+import { TasksContext } from "../../context/tasks-context";
+import axios from "../../axios-api";
 
 interface Board {
   id: number;
@@ -42,8 +43,17 @@ interface ActibeBoard {
   loaded: boolean;
 }
 
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+  severity: number;
+  column: number;
+}
+
 const KanBan: React.FC = () => {
-  const { userState, userDispatch } = useContext(UserContext)
+  const { userState, userDispatch } = useContext(UserContext);
+  const { tasksDispatch } = useContext(TasksContext);
 
   const [activeBoard, setActiveBoard] = useState<ActibeBoard>({
     id: -1,
@@ -54,14 +64,17 @@ const KanBan: React.FC = () => {
 
   useEffect(() => {
     if (userState.boards !== null && Object.keys(userState.boards).length > 0) {
-      setBoardSelection(+Object.keys(userState.boards )[0]);
+      console.log(
+        "setting board selection to ",
+        +Object.keys(userState.boards)[0]
+      );
+      setBoardSelection(userState.boards[0].id);
     }
-  }, []);
+  }, [userState.boards]);
 
   const logOutHandler = () => {
-    userDispatch({type: "LOG_OUT"})
-  }
-
+    userDispatch({ type: "LOG_OUT" });
+  };
 
   const boardSelectionChangeHandler = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -71,7 +84,23 @@ const KanBan: React.FC = () => {
 
   const loadBoardHandler = () => {
     if (boardSelection != null && boardSelection > 0) {
-      // Here will have to fetch tasks for selected board
+      tasksDispatch({ type: "TASKS_FETCH_START" });
+      axios
+        .get(
+          `/api?query={tasks_on_board(board_id:${boardSelection}){id,title,description,severity,column}}`
+        )
+        .then((resp) => {
+          const respData = resp.data;
+          if (respData.data.tasks_on_board != null) {
+            const tasks: {[id: number]: Task} = {}
+            for (let i = 0; i < respData.data.tasks_on_board.length; i++){
+              let task:Task = respData.data.tasks_on_board[i]
+              tasks[task.id] = task
+            }
+            console.log(tasks)
+            tasksDispatch({ type: "TASKS_FETCH", tasks: tasks });
+          }
+        });
       setActiveBoard({ id: boardSelection, loaded: true });
     }
   };
@@ -91,7 +120,9 @@ const KanBan: React.FC = () => {
           Show
         </button>
       </div>
-    ) : <p>Currently you are not part of any board</p>;
+    ) : (
+      <p>Currently you are not part of any board</p>
+    );
 
   let board = activeBoard.loaded ? (
     <KanBanBoard name={boards[activeBoard.id].name} id={activeBoard.id} />
