@@ -1,20 +1,45 @@
-import React from "react";
+import React, {useReducer} from "react";
+import userReducer from "../store/reducers/user-reducer";
 
 interface Board {
-    id: number,
-    name: string,
-    description: string,
-    isOwner: boolean
+  id: number;
+  name: string;
+  isOwner: boolean;
 }
 
-interface UserContext {
-    loggedIn: boolean,
-    userID: number | null,
-    boards: [Board] | null
+interface UserState {
+  loggedIn: boolean;
+  username: string;
+  userID: number | null;
+  boards: [Board] | null;
 }
 
-export const UserContext= React.createContext<UserContext>({
-    loggedIn: false,
-    userID: null,
-    boards: null
-})
+const initState = {
+  loggedIn: false,
+  username: "",
+  userID: null,
+  boards: null,
+};
+
+export const UserContext = React.createContext<{
+  userState: UserState;
+  userDispatch: React.Dispatch<any>;
+}>({
+  userState: initState,
+  userDispatch: () => null,
+});
+
+const UserContextProvider: React.FC = ({ children }) => {
+  const [state, dispatch] = useReducer(userReducer, initState);
+
+  return (
+    <UserContext.Provider
+      value={{ userState: state, userDispatch: dispatch }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+
+export default UserContextProvider;
