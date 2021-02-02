@@ -16,6 +16,7 @@ const LogInForm: React.FC = () => {
   const { userDispatch } = useContext(UserContext);
   const [logInForm, setLogInForm] = useState<FormState>(initState);
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -41,6 +42,7 @@ const LogInForm: React.FC = () => {
           userDispatch({ type: "LOG_IN", user: respData.auth });
         } else {
           console.log("Setting error");
+          setMessage(null);
           setError("Could not log in, please check you username/password");
           setLoading(false);
         }
@@ -58,14 +60,33 @@ const LogInForm: React.FC = () => {
     };
     axios
       .post("/api", data)
-      .then((resp) => console.log(resp))
-      .catch((err) => console.log(err));
+      .then((resp) => {
+        console.log(resp);
+        const respData = resp.data;
+        if (respData.data.add_user !== null) {
+          setError(null)
+          setMessage(
+            `Successfully created user ${respData.data.add_user.name}. Now you can log in with this username: `
+          );
+        } else if (respData.errors) {
+          setError(`Could not create user ${logInForm.username}`);
+          setMessage(null)
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
   return (
     <div>
       <div className="LogInErrors">
         {error !== null ? <p>{error}</p> : null}
+      </div>
+      <div className="LogInMessages">
+        {message !== null ? <p>{message}</p> : null}
       </div>
       <form onSubmit={logInHandler}>
         <label>Username</label>
