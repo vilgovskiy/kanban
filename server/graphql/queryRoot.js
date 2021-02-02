@@ -46,7 +46,7 @@ const QueryRoot = new graphql.GraphQLObjectType({
       extensions: {
         joinMonster: {
           where: (userTable, args, context) =>
-            `${userTable}.name = ${args.name} AND ${userTable}.password = ${args.password}`,
+            `${userTable}.name = '${args.name}' AND ${userTable}.password = '${args.password}'`,
         },
       },
       resolve: (parent, args, context, resolveInfo) => {
