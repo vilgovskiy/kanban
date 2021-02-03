@@ -82,21 +82,25 @@ const MutationRoot = new graphql.GraphQLObjectType({
       },
     },
     add_user_to_board: {
-      type: Board,
+      type: User,
       args: {
         board: { type: graphql.GraphQLNonNull(graphql.GraphQLInt) },
-        user: { type: graphql.GraphQLNonNull(graphql.GraphQLInt) },
+        user: { type: graphql.GraphQLNonNull(graphql.GraphQLString) },
       },
       resolve: async (parent, args, context, resolveInfo) => {
         try {
+          var userRecord = await dbClient.query("SELECT user_id FROM users WHERE name = $1", [args.user])
+          if (userRecord.rows.length < 1){
+            throw new Error(`User ${args.user} does not exist`)
+          }
           return (
             await dbClient.query(
-              "INSERT INTO boards_users (board_id, user_id) VALUES ($1, $2) RETURNING *",
-              [args.board, args.user]
+              "INSERT INTO boards_members (board_id, user_id) VALUES ($1, $2) RETURNING board_id, user_id as id",
+              [args.board, userRecord.rows[0].user_id]
             )
           ).rows[0];
         } catch (err) {
-          throw new Error("Failed to insert new player");
+          throw new Error(`Failed to add user to board ${args.board}: ${err}`);
         }
       },
     },
