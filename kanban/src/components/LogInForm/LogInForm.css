@@ -1,0 +1,103 @@
+.LogInForm {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: fit-content;
+  background-color: #ffffff;
+  border-radius: 40px;
+  font-size: max(2vw, 15px);
+}
+
+.LogInForm h2 {
+  margin: 2vw 1vw 5px 1vw;
+  font-size: 2em;
+}
+
+.LogInForm h3 {
+  font-size: 1em;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.LogInForm form {
+  width: 90%;
+  margin: 30px;
+  margin-left: 5%;
+}
+
+.LogInForm button {
+  background-image: linear-gradient(
+    to right,
+    #dd5e89 0%,
+    #f7bb97 51%,
+    #dd5e89 100%
+  );
+}
+.LogInForm button {
+  display: inline-block;
+  margin: 1vw;
+  padding: 1.5vw 4.5vw;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+}
+
+.LogInForm button:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+.LogInFormGroup {
+  position: relative;
+  margin-bottom: 25px;
+}
+.LogInFormGroup label {
+  position: absolute;
+  top: 0px;
+  left: 10%;
+  font-size: 1.8vw;
+  color: black;
+  transition: all 0.5s ease-in-out;
+}
+.LogInFormGroup input {
+  border: 0;
+  border-bottom: 1px solid #555;
+  background: transparent;
+  width: 80%;
+  padding: 8px 0 5px 0;
+  font-size: 1.8vw;
+  color: black;
+}
+.LogInFormGroup input:focus {
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #e74c3c;
+}
+
+.LogInFormGroup input:focus ~ label,
+.LogInFormGroup input:valid ~ label {
+  transform: translateY(-12px);
+  font-size: 1.4vw;
+}
+
+.LogInErrors {
+  font-size: 1.4vw;
+  color: red;
+}
+
+.Spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  height: auto;
+  z-index: 10;
+}

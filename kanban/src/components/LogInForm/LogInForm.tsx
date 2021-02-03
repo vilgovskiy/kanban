@@ -3,6 +3,8 @@ import React, { useContext, useState } from "react";
 import Spinner from "../UI/Spinner/Spinner";
 import { UserContext } from "../../context/user-context";
 
+import "./LogInForm.css";
+
 interface FormState {
   username: string;
   password: string;
@@ -64,13 +66,13 @@ const LogInForm: React.FC = () => {
         console.log(resp);
         const respData = resp.data;
         if (respData.data.add_user !== null) {
-          setError(null)
+          setError(null);
           setMessage(
             `Successfully created user ${respData.data.add_user.name}. Now you can log in with this username: `
           );
         } else if (respData.errors) {
           setError(`Could not create user ${logInForm.username}`);
-          setMessage(null)
+          setMessage(null);
         }
         setLoading(false);
       })
@@ -81,31 +83,40 @@ const LogInForm: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="LogInForm">
+      <h2>Hello User! </h2>
+      <h3>Please sign in to view boards!</h3>
       <div className="LogInErrors">
         {error !== null ? <p>{error}</p> : null}
       </div>
       <div className="LogInMessages">
         {message !== null ? <p>{message}</p> : null}
       </div>
-      <form onSubmit={logInHandler}>
-        <label>Username</label>
-        <input
-          type="text"
-          placeholder="username"
-          value={logInForm.username}
-          onChange={(e) => inputChangeHandler(e, "username")}
-        />
-        <label>Password</label>
-        <input
-          type="text"
-          placeholder="password"
-          value={logInForm.password}
-          onChange={(e) => inputChangeHandler(e, "password")}
-        />
-        <button>Log in</button>
+      <form onSubmit={(e) => e.preventDefault()}>
+        <div className="LogInFormGroup">
+          <input
+            type="text"
+            //placeholder="Username"
+            value={logInForm.username}
+            onChange={(e) => inputChangeHandler(e, "username")}
+            required
+          />
+          <label>Username</label>
+        </div>
+        <div className="LogInFormGroup">
+          <input
+            type="text"
+            //placeholder="Password"
+            value={logInForm.password}
+            onChange={(e) => inputChangeHandler(e, "password")}
+            required
+          />
+          <label>Password</label>
+        </div>
+        <button onClick={logInHandler}>Log in</button>
+        <button onClick={signupHandler}>Sign up</button>
       </form>
-      <button onClick={signupHandler}>Sign up</button>
+
       {loading ? <Spinner /> : null}
     </div>
   );
