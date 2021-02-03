@@ -122,6 +122,25 @@ const MutationRoot = new graphql.GraphQLObjectType({
         }
       },
     },
+    move_task: {
+      type: Task,
+      args: {
+        task_id: { type: graphql.GraphQLNonNull(graphql.GraphQLInt) },
+        column: { type: graphql.GraphQLNonNull(graphql.GraphQLInt) },
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        try {
+          return (
+            await dbClient.query(
+              "UPDATE tasks SET board_column = $1 WHERE task_id = $2 returning task_id as id, title, description, severity, board_column as column",
+              [args.column, args.task_id]
+            )
+          ).rows[0];
+        } catch (err) {
+          throw new Error(`Failed to chane task ${args.task_id} column to ${args.column}: ${err}`);
+        }
+      },
+    },
   }),
 });
 

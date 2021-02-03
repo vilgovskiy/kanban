@@ -1,3 +1,4 @@
+import axios from "../../../axios-api";
 import React, { useContext, useState } from "react";
 import { TasksContext } from "../../../context/tasks-context";
 import TaskForm from "../../TaskForm/TaskForm";
@@ -44,8 +45,21 @@ const Board: React.FC<Props> = (props) => {
     taskID: number
   ) => {
     event.preventDefault();
-    // here will be API call to update task
-    tasksDispatch({ type: "TASK_UPDATE", taskID: taskID });
+    if(tasksState.tasks[taskID].column !== tasksState.dragOverColumn){
+      const data = {query: `mutation {
+        move_task(task_id:${taskID}, column:${tasksState.dragOverColumn}){
+          id,
+          title,
+          description,
+          severity,
+          column
+        }
+      }`}
+      axios.post('/api',data)
+      .then(resp => console.log(resp))
+      .catch(err => console.log(err))
+      tasksDispatch({ type: "TASK_UPDATE", taskID: taskID });
+    }
   };
 
   const openNewTaskFormHandler = () => setTaskForm(true)
