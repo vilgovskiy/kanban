@@ -32,10 +32,39 @@
 .BoardSelection {
   display: inline-block;
   margin: 1vw;
+  height: 30px;
 }
 
 .BoardSelection label {
   margin-right: 10px;
+}
+
+.BoardSelection select {
+  display: inline-block;
+  box-sizing: border-box;
+  height: 100%;
+  border: 1px solid #d3d3d3;
+  background-color: #eee;
+
+}
+
+#LoadBoardButton {
+  display: inline-block;
+  box-sizing: border-box;
+  height: 100%;
+  background-color: #eee;
+  margin-left: 5px;
+  border: 0;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1em;
+  color: #c850c0;
+  transition: 0.5s;
+}
+
+#LoadBoardButton:hover {
+  color: #fff;
+  background-color: #c850c0;
 }
 
 .LogOutButton {

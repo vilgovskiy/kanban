@@ -60,10 +60,10 @@
 }
 .LogInFormGroup label {
   position: absolute;
-  top: 0px;
+  top: 0.3em;
   left: 10%;
-  font-size: 1.8vw;
-  color: black;
+  font-size: 1em;
+  color: #555;
   transition: all 0.5s ease-in-out;
 }
 .LogInFormGroup input {
@@ -71,33 +71,24 @@
   border-bottom: 1px solid #555;
   background: transparent;
   width: 80%;
-  padding: 8px 0 5px 0;
-  font-size: 1.8vw;
+  padding: 8px 0 1px 0;
+  font-size: 1em;
   color: black;
 }
 .LogInFormGroup input:focus {
   border: none;
   outline: none;
-  border-bottom: 1px solid #e74c3c;
+  border-bottom: 1px solid #c850c0;
 }
 
 .LogInFormGroup input:focus ~ label,
 .LogInFormGroup input:valid ~ label {
-  transform: translateY(-12px);
-  font-size: 1.4vw;
+  transform: translateY(-1.2em);
+  font-size: 0.8em;
+  color: #c850c0;
 }
 
 .LogInErrors {
   font-size: 1.4vw;
   color: red;
-}
-
-.Spinner {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 30%;
-  height: auto;
-  z-index: 10;
 }
