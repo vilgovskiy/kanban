@@ -1,14 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import KanBanBoard from "./KanBanBoard/KanBanBoard";
 import { UserContext } from "../../context/user-context";
 import { TasksContext } from "../../context/tasks-context";
 import axios from "../../axios-api";
 import Toolbar from "../Toolbar/Toolbar";
-
-interface ActiveBoard {
-  id: number;
-  loaded: boolean;
-}
 
 interface Task {
   id: number;
@@ -19,25 +14,19 @@ interface Task {
 }
 
 const KanBan: React.FC = () => {
-  console.log("renderring kanban")
   const { userState, userDispatch } = useContext(UserContext);
   const { tasksDispatch } = useContext(TasksContext);
-
-  const [activeBoard, setActiveBoard] = useState<ActiveBoard>({
-    id: -1,
-    loaded: false,
-  });
 
   const logOutHandler = () => {
     userDispatch({ type: "LOG_OUT" });
   };
 
-  const loadBoardHandler = (boardSelection: number | null) => {
-    if (boardSelection != null && boardSelection > 0) {
+  useEffect(() => {
+    if (userState.activeBoard.loaded) {
       tasksDispatch({ type: "TASKS_FETCH_START" });
       axios
         .get(
-          `/api?query={tasks_on_board(board_id:${boardSelection}){id,title,description,severity,column}}`
+          `/api?query={tasks_on_board(board_id:${userState.boards[userState.activeBoard.id].id}){id,title,description,severity,column}}`
         )
         .then((resp) => {
           const respData = resp.data;
@@ -47,23 +36,43 @@ const KanBan: React.FC = () => {
               let task: Task = respData.data.tasks_on_board[i];
               tasks[task.id] = task;
             }
-            console.log(tasks);
             tasksDispatch({ type: "TASKS_FETCH", tasks: tasks });
           }
         });
+    }
+  },[userState.activeBoard.id, userState.activeBoard.loaded, userState.boards ])
+
+  const loadBoardHandler = (boardSelection: number | null) => {
+    if (boardSelection != null && boardSelection > 0) {
       const key = userState.boards !== null ? userState.boards.findIndex(board => board.id === boardSelection) : -1
-      setActiveBoard({ id: key, loaded: true });
+      userDispatch({ type: "SET_ACTIVE_BOARD", id: key});
     }
   };
 
+  const createBoardHandler = (newBoardname: string) => {
+    if (!userState.loggedIn) return
+    const data = {
+      query: `mutation{add_board(name:"${newBoardname}",owner:${userState.userID}){id,name}}`
+    }
+    axios.post("/api", data)
+    .then(resp => {
+      const respData = resp.data;
+      if (respData.data.add_board !== null) {
+        // Add board to user context
+        console.log(respData)
+        userDispatch({type: "ADD_BOARD", board: {...respData.data.add_board, isOwner: true}})
+      }
+    }).catch(err => console.log(err))
+  }
 
-  let board = activeBoard.loaded && userState.boards !== null? (
-    <KanBanBoard board={userState.boards[activeBoard.id]} />
+
+  let board = userState.activeBoard.loaded && userState.boards !== null? (
+    <KanBanBoard board={userState.boards[userState.activeBoard.id]} />
   ) : null;
 
   return (
     <div>
-      <Toolbar user={userState.username} boards={userState.boards} loadHandler={loadBoardHandler} logOutHandler={logOutHandler}/>
+      <Toolbar user={userState.username} boards={userState.boards} createHandler={createBoardHandler} loadHandler={loadBoardHandler} logOutHandler={logOutHandler}/>
       {board}
     </div>
   );

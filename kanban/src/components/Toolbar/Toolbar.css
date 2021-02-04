@@ -1,0 +1,58 @@
+.Toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background-color: white;
+}
+
+.Toolbar h3 {
+  float: left;
+  max-width: 30%;
+  margin: 2vw;
+  font-size: 28px;
+  text-overflow: ellipsis;
+  background-image: linear-gradient(
+    to right,
+    #dd5e89 0%,
+    #f7bb97 51%,
+    #dd5e89 100%
+  );
+  background-size: 200% auto;
+  transition: 0.5s;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.Toolbar h3:hover {
+  background-position: right center;
+}
+
+.BoardSelection {
+  display: inline-block;
+  margin: 1vw;
+}
+
+.BoardSelection label {
+  margin-right: 10px;
+}
+
+.LogOutButton {
+  float: right;
+  height: 100%;
+  display: inline-block;
+  padding: 1.5vw 4.5vw;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: black;
+  border: 0;
+}
+
+.LogOutButton:hover {
+  background: darkgrey;
+  color: #fff;
+  text-decoration: none;
+}

@@ -12,6 +12,10 @@ interface UserState {
   username: string;
   userID: number | null;
   boards: Board[];
+  activeBoard: {
+    loaded: boolean;
+    id: number;
+  }
 }
 
 const initState = {
@@ -19,6 +23,10 @@ const initState = {
   username: "",
   userID: null,
   boards: [],
+  activeBoard: {
+    loaded: false,
+    id: -1
+  }
 };
 
 export const UserContext = React.createContext<{

@@ -27,7 +27,6 @@ const columns: Column[] = [
 
 const Board: React.FC<{ board: Board }> = ({ board }) => {
   const { tasksState, tasksDispatch } = useContext(TasksContext);
-
   const [taskForm, setTaskForm] = useState<boolean>(false);
 
   let tasks = tasksState.tasks;
