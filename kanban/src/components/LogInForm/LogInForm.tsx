@@ -14,6 +14,7 @@ const initState = {
   username: "",
   password: "",
 };
+
 const LogInForm: React.FC = () => {
   const { userDispatch } = useContext(UserContext);
   const [logInForm, setLogInForm] = useState<FormState>(initState);
@@ -43,7 +44,6 @@ const LogInForm: React.FC = () => {
         if (respData.auth !== null) {
           userDispatch({ type: "LOG_IN", user: respData.auth });
         } else {
-          console.log("Setting error");
           setMessage(null);
           setError("Could not log in, please check you username/password");
           setLoading(false);
@@ -57,13 +57,12 @@ const LogInForm: React.FC = () => {
 
   const signupHandler = () => {
     setLoading(true);
-    let data = {
+    const data = {
       query: `mutation{add_user(name:"${logInForm.username}",password:"${logInForm.password}"){id,name}}`,
     };
     axios
       .post("/api", data)
       .then((resp) => {
-        console.log(resp);
         const respData = resp.data;
         if (respData.data.add_user !== null) {
           setError(null);
@@ -92,7 +91,7 @@ const LogInForm: React.FC = () => {
       <div className="LogInMessages">
         {message !== null ? <p>{message}</p> : null}
       </div>
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form>
         <div className="LogInFormGroup">
           <input
             type="text"

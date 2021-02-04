@@ -59,7 +59,6 @@ const KanBan: React.FC = () => {
       const respData = resp.data;
       if (respData.data.add_board !== null) {
         // Add board to user context
-        console.log(respData)
         userDispatch({type: "ADD_BOARD", board: {...respData.data.add_board, isOwner: true}})
       }
     }).catch(err => console.log(err))

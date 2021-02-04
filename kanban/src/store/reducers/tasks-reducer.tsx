@@ -15,15 +15,11 @@ interface State {
 const tasksReducer = (state: State, action: any) => {
   switch (action.type) {
     case "DRAG_UPDATE":
-      console.log(`Dragging over column ${action.column}`);
       return { ...state, dragOverColumn: action.column };
     case "TASK_UPDATE":
       const taskToUPD = Object.values(state.tasks).filter(
         (task) => task.id === action.taskID
       )[0];
-      console.log(
-        `Updating tas ${taskToUPD.id} from column ${taskToUPD.column} to ${state.dragOverColumn}`
-      );
       taskToUPD.column = state.dragOverColumn;
       const tasksUPD = { ...state.tasks, [taskToUPD.id]: taskToUPD };
       return { ...state, tasks: tasksUPD };

@@ -32,7 +32,6 @@ const TaskForm = (props: Props) => {
     .then(resp => {
       const respData = resp.data
       if (respData.data.add_task !== null) {
-        console.log(respData.data.add_task)
         tasksDispatch({type: "ADD_TASK", newTask: respData.data.add_task})
       }
     })
