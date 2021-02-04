@@ -11,7 +11,7 @@ interface Column {
   name: string;
 }
 
-interface Board {
+interface BoardType {
   id: number;
   name: string;
   isOwner: boolean;
@@ -25,7 +25,7 @@ const columns: Column[] = [
   { id: 4, name: "Completed" },
 ];
 
-const Board: React.FC<{ board: Board }> = ({ board }) => {
+const Board: React.FC<{ board: BoardType }> = ({ board }) => {
   const { tasksState, tasksDispatch } = useContext(TasksContext);
   const [taskForm, setTaskForm] = useState<boolean>(false);
 
