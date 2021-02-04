@@ -14,12 +14,21 @@ const MutationRoot = new graphql.GraphQLObjectType({
       },
       resolve: async (parent, args, context, resolveInfo) => {
         try {
-          return (
-            await dbClient.query(
-              "INSERT INTO boards (name, owner) VALUES ($1, $2) RETURNING *",
-              [args.name, args.owner]
-            )
-          ).rows[0];
+          // First need to add board to boards table
+          newBoardRecord = await dbClient.query(
+            "INSERT INTO boards (name, owner) VALUES ($1, $2) RETURNING board_id as id, name",
+            [args.name, args.owner]
+          );
+          if (newBoardRecord.rows.length < 1)
+            throw new Error(`Could not create board ${args.name}`);
+
+          // Now need to add new board and its owner to boards_members relations
+          await dbClient.query(
+            "INSERT INTO boards_members (board_id, user_id) VALUES ($1, $2)",
+            [newBoardRecord.rows[0].id, args.owner]
+          );
+          console.log("created new board")
+          return newBoardRecord.rows[0];
         } catch (err) {
           throw new Error(`Failed to insert new board ${err}`);
         }
@@ -89,9 +98,12 @@ const MutationRoot = new graphql.GraphQLObjectType({
       },
       resolve: async (parent, args, context, resolveInfo) => {
         try {
-          var userRecord = await dbClient.query("SELECT user_id FROM users WHERE name = $1", [args.user])
-          if (userRecord.rows.length < 1){
-            throw new Error(`User ${args.user} does not exist`)
+          var userRecord = await dbClient.query(
+            "SELECT user_id FROM users WHERE name = $1",
+            [args.user]
+          );
+          if (userRecord.rows.length < 1) {
+            throw new Error(`User ${args.user} does not exist`);
           }
           return (
             await dbClient.query(
@@ -111,14 +123,20 @@ const MutationRoot = new graphql.GraphQLObjectType({
         description: { type: graphql.GraphQLNonNull(graphql.GraphQLString) },
         severity: { type: graphql.GraphQLNonNull(graphql.GraphQLInt) },
         column: { type: graphql.GraphQLNonNull(graphql.GraphQLInt) },
-        board: { type: graphql.GraphQLNonNull(graphql.GraphQLInt)}
+        board: { type: graphql.GraphQLNonNull(graphql.GraphQLInt) },
       },
       resolve: async (parent, args, context, resolveInfo) => {
         try {
           return (
             await dbClient.query(
               "INSERT INTO tasks (title, description, severity, board_column, board) VALUES ($1, $2, $3, $4, $5) RETURNING task_id as id, title, description, severity, board_column as column",
-              [args.title, args.description, args.severity, args.column, args.board]
+              [
+                args.title,
+                args.description,
+                args.severity,
+                args.column,
+                args.board,
+              ]
             )
           ).rows[0];
         } catch (err) {
@@ -141,7 +159,9 @@ const MutationRoot = new graphql.GraphQLObjectType({
             )
           ).rows[0];
         } catch (err) {
-          throw new Error(`Failed to chane task ${args.task_id} column to ${args.column}: ${err}`);
+          throw new Error(
+            `Failed to chane task ${args.task_id} column to ${args.column}: ${err}`
+          );
         }
       },
     },
