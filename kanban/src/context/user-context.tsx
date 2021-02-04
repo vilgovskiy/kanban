@@ -11,14 +11,14 @@ interface UserState {
   loggedIn: boolean;
   username: string;
   userID: number | null;
-  boards: [Board] | null;
+  boards: Board[];
 }
 
 const initState = {
   loggedIn: false,
   username: "",
   userID: null,
-  boards: null,
+  boards: [],
 };
 
 export const UserContext = React.createContext<{

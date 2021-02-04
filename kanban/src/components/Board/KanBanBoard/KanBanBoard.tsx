@@ -11,6 +11,12 @@ interface Column {
   name: string;
 }
 
+interface Board {
+  id: number;
+  name: string;
+  isOwner: boolean;
+}
+
 const columns: Column[] = [
   { id: 0, name: "Backlog" },
   { id: 1, name: "Assigned" },
@@ -19,13 +25,7 @@ const columns: Column[] = [
   { id: 4, name: "Completed" },
 ];
 
-interface Props {
-  name: string;
-  id: number;
-}
-
-
-const Board: React.FC<Props> = (props) => {
+const Board: React.FC<{ board: Board }> = ({ board }) => {
   const { tasksState, tasksDispatch } = useContext(TasksContext);
 
   const [taskForm, setTaskForm] = useState<boolean>(false);
@@ -45,8 +45,9 @@ const Board: React.FC<Props> = (props) => {
     taskID: number
   ) => {
     event.preventDefault();
-    if(tasksState.tasks[taskID].column !== tasksState.dragOverColumn){
-      const data = {query: `mutation {
+    if (tasksState.tasks[taskID].column !== tasksState.dragOverColumn) {
+      const data = {
+        query: `mutation {
         move_task(task_id:${taskID}, column:${tasksState.dragOverColumn}){
           id,
           title,
@@ -54,23 +55,27 @@ const Board: React.FC<Props> = (props) => {
           severity,
           column
         }
-      }`}
-      axios.post('/api',data)
-      .then(resp => console.log(resp))
-      .catch(err => console.log(err))
+      }`,
+      };
+      axios
+        .post("/api", data)
+        .then((resp) => console.log(resp))
+        .catch((err) => console.log(err));
       tasksDispatch({ type: "TASK_UPDATE", taskID: taskID });
     }
   };
 
-  const openNewTaskFormHandler = () => setTaskForm(true)
-  const closeNewTaskFormHandler = () => setTaskForm(false)
+  const openNewTaskFormHandler = () => setTaskForm(true);
+  const closeNewTaskFormHandler = () => setTaskForm(false);
 
-  let newTaskForm = taskForm ? <TaskForm board_id={props.id} formCloseHandler={closeNewTaskFormHandler} /> : null
+  let newTaskForm = taskForm ? (
+    <TaskForm board_id={board.id} formCloseHandler={closeNewTaskFormHandler} />
+  ) : null;
 
   return (
     <div>
       <div id="BoardControls">
-        <h1>{props.name}</h1>
+        <h1>{board.name}</h1>
         <button onClick={openNewTaskFormHandler}>Add Task</button>
         {newTaskForm}
       </div>
@@ -92,5 +97,5 @@ const Board: React.FC<Props> = (props) => {
 
 export default React.memo(
   Board,
-  (oldProps, nextProps) => oldProps.id === nextProps.id
+  (oldProps, nextProps) => oldProps.board.id === nextProps.board.id
 );
