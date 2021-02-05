@@ -33,14 +33,16 @@ const TaskForm = (props: Props) => {
       return
     }
     let data = {
-      query: `mutation{add_task(title:"${taskForm.title}",description:"${taskForm.description}",severity:${taskForm.severity},column:0,board:${props.board_id}){id,title,description,severity,column}}`,
+      query: `mutation{add_task(title:"${taskForm.title}",description:"${encodeURIComponent(taskForm.description)}",severity:${taskForm.severity},column:0,board:${props.board_id}){id,title,description,severity,column}}`,
     };
+    console.log(data.query)
     axios
       .post("/api", data)
       .then((resp) => {
         const respData = resp.data;
         if (respData.data.add_task !== null) {
-          tasksDispatch({ type: "ADD_TASK", newTask: respData.data.add_task });
+          const newTask = {...respData.data.add_task, description: decodeURIComponent(respData.data.add_task.description)}
+          tasksDispatch({ type: "ADD_TASK", newTask: newTask });
         }
       })
       .catch((err) => console.log(err));

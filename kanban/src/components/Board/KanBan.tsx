@@ -35,7 +35,7 @@ const KanBan: React.FC = () => {
           if (respData.data.tasks_on_board != null) {
             const tasks: { [id: number]: Task } = {};
             for (let i = 0; i < respData.data.tasks_on_board.length; i++) {
-              let task: Task = respData.data.tasks_on_board[i];
+              let task: Task = {...respData.data.tasks_on_board[i], description: decodeURIComponent(respData.data.tasks_on_board[i].description)};
               tasks[task.id] = task;
             }
             tasksDispatch({ type: "TASKS_FETCH", tasks: tasks });
