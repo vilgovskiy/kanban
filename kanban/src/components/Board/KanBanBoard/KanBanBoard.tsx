@@ -70,6 +70,24 @@ const Board: React.FC<Props> = ({ board, boardDelete }) => {
     }
   };
 
+  const taskDeleteHandler = (task_id: number) => {
+    const data = {
+      query: `mutation{delete_task(id:${task_id}){id}}`,
+    };
+    axios.post("/api", data).then((resp) => {
+      const respData = resp.data;
+      if (
+        respData.data.delete_task != null &&
+        respData.data.delete_task.id === task_id
+      ) {
+        tasksDispatch({ type: "DELETE_TASK", task_id: task_id });
+      } else if (respData.errors) {
+        console.log(respData.errors);
+      }
+    })
+    .catch(err => console.log(err));
+  };
+
   const openNewTaskFormHandler = () => setTaskForm(true);
   const closeNewTaskFormHandler = () => setTaskForm(false);
 
@@ -108,6 +126,7 @@ const Board: React.FC<Props> = ({ board, boardDelete }) => {
             )}
             onDragEnter={onDragEnterHandler}
             onDragEnd={onDragEndHandler}
+            onTaskDelete={taskDeleteHandler}
           />
         ))}
       </div>

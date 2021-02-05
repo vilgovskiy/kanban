@@ -183,6 +183,24 @@ const MutationRoot = new graphql.GraphQLObjectType({
         }
       },
     },
+    delete_task: {
+      type: Task,
+      args: {
+        id: { type: graphql.GraphQLNonNull(graphql.GraphQLInt) },
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        try {
+          return (
+            await dbClient.query(
+              "DELETE FROM tasks WHERE task_id = $1 RETURNING task_id as id",
+              [args.id]
+            )
+          ).rows[0];
+        } catch (err) {
+          throw new Error(`Failed to delete task ${err}`);
+        }
+      },
+    },
   }),
 });
 

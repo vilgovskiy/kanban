@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./KanBanCard.css";
+import { MdEdit, MdDelete } from "react-icons/md";
 
 interface Task {
   id: number;
@@ -12,6 +13,7 @@ interface Task {
 interface Props {
   task: Task;
   onDragEnd: (event: React.DragEvent<HTMLDivElement>, taskID: number) => void;
+  onTaskDelete: (task_id: number) => void;
 }
 
 const KanBanCard = (props: Props) => {
@@ -34,8 +36,20 @@ const KanBanCard = (props: Props) => {
       draggable={true}
       onDragEnd={(e) => props.onDragEnd(e, props.task.id)}
     >
-      <h4 className="CardTitle">{props.task.title}</h4>
-      {props.task.description.length > 0 ? <div className="CardDescription" onClick={expandHandler}>{displayDescription}</div> : null}
+      <div className="CardTitle">
+        <h4>{props.task.title}</h4>
+        <div className="CardChangeIcons" onClick={()=>props.onTaskDelete(props.task.id)}>
+          <MdDelete size={20} />
+        </div>
+        <div className="CardChangeIcons">
+          <MdEdit size={20}/>
+        </div>
+      </div>
+      {props.task.description.length > 0 ? (
+        <div className="CardDescription" onClick={expandHandler}>
+          {displayDescription}
+        </div>
+      ) : null}
     </div>
   );
 };

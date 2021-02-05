@@ -19,6 +19,7 @@ interface Props {
     columnID: number
   ) => void;
   onDragEnd: (event: React.DragEvent<HTMLDivElement>, taskID: number) => void;
+  onTaskDelete: (task_id: number) => void
 }
 
 const KanbanColumn = (props: Props) => {
@@ -30,7 +31,7 @@ const KanbanColumn = (props: Props) => {
       <h3>{props.name}</h3>
       <div className="TasksSection">
         {props.tasks.map((task) => (
-          <KanBanCard key={task.id} task={task} onDragEnd={props.onDragEnd} />
+          <KanBanCard key={task.id} task={task} onDragEnd={props.onDragEnd} onTaskDelete={props.onTaskDelete} />
         ))}
       </div>
     </div>

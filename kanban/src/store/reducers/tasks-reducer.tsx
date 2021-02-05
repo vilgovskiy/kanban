@@ -32,6 +32,10 @@ const tasksReducer = (state: State, action: any) => {
         ...state,
         tasks: { ...state.tasks, [action.newTask.id]: action.newTask },
       };
+    case "DELETE_TASK":
+      const tasksUpd = {...state.tasks};
+      delete tasksUpd[action.task_id];
+      return {...state, tasks: tasksUpd}
     default:
       return state;
   }
