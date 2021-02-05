@@ -91,6 +91,7 @@ const LogInForm: React.FC = () => {
       <div className="LogInMessages">
         {message !== null ? <p>{message}</p> : null}
       </div>
+      {loading ? <Spinner /> : null}
       <form>
         <div className="LogInFormGroup">
           <input
@@ -115,8 +116,6 @@ const LogInForm: React.FC = () => {
         <button onClick={logInHandler}>Log in</button>
         <button onClick={signupHandler}>Sign up</button>
       </form>
-
-      {loading ? <Spinner /> : null}
     </div>
   );
 };

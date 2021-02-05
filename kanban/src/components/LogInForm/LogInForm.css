@@ -4,7 +4,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 50%;
-  height: fit-content;
+  height: 60vh;
   background-color: #ffffff;
   border-radius: 40px;
   font-size: max(2vw, 15px);
@@ -25,6 +25,8 @@
   width: 90%;
   margin: 30px;
   margin-left: 5%;
+  position: fixed;
+  bottom: 10%;
 }
 
 .LogInForm button {
