@@ -158,7 +158,7 @@ const MutationRoot = new graphql.GraphQLObjectType({
             )
           ).rows[0];
         } catch (err) {
-          throw new Error(`Failed to insert new user ${err}`);
+          throw new Error(`Failed to insert new Task ${err}`);
         }
       },
     },
