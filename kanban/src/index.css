@@ -25,3 +25,8 @@ html {
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
+
+html::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
