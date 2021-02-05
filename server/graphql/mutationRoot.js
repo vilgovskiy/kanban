@@ -162,6 +162,32 @@ const MutationRoot = new graphql.GraphQLObjectType({
         }
       },
     },
+    update_task: {
+      type: Task,
+      args: {
+        id: { type: graphql.GraphQLNonNull(graphql.GraphQLInt) },
+        title: { type: graphql.GraphQLNonNull(graphql.GraphQLString) },
+        description: { type: graphql.GraphQLNonNull(graphql.GraphQLString) },
+        severity: { type: graphql.GraphQLNonNull(graphql.GraphQLInt) },
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        try {
+          return (
+            await dbClient.query(
+              "UPDATE tasks SET title = $1, description = $2, severity = $3 WHERE task_id = $4 RETURNING task_id as id, title, description, severity, board_column as column",
+              [
+                args.title,
+                args.description,
+                args.severity,
+                args.id,
+              ]
+            )
+          ).rows[0];
+        } catch (err) {
+          throw new Error(`Failed to update Task ${args.id} ${err}`);
+        }
+      },
+    },
     move_task: {
       type: Task,
       args: {

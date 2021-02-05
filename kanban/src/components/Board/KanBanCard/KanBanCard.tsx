@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./KanBanCard.css";
 import { MdEdit, MdDelete } from "react-icons/md";
+import TaskForm from "../../TaskForm/TaskForm";
 
 interface Task {
   id: number;
@@ -18,6 +19,7 @@ interface Props {
 
 const KanBanCard = (props: Props) => {
   const [expandState, setExpand] = useState<boolean>(false);
+  const [editFormActive, setEditFormActive] = useState<boolean>(false)
 
   const expandHandler = () => setExpand(!expandState);
 
@@ -30,6 +32,11 @@ const KanBanCard = (props: Props) => {
       </p>
     );
   }
+
+  const handleOpenEditForm = () => setEditFormActive(true)
+  const handleCloseEditForm = () => setEditFormActive(false)
+
+  const editFormComponent = editFormActive ? <TaskForm type="EDIT" task={props.task} formCloseHandler={handleCloseEditForm} /> : null
   return (
     <div
       className="KanBanCard"
@@ -37,11 +44,12 @@ const KanBanCard = (props: Props) => {
       onDragEnd={(e) => props.onDragEnd(e, props.task.id)}
     >
       <div className="CardTitle">
+        {editFormComponent}
         <h4>{props.task.title}</h4>
         <div className="CardChangeIcons" onClick={()=>props.onTaskDelete(props.task.id)}>
           <MdDelete size={20} />
         </div>
-        <div className="CardChangeIcons">
+        <div className="CardChangeIcons" onClick={handleOpenEditForm}>
           <MdEdit size={20}/>
         </div>
       </div>

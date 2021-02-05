@@ -92,7 +92,7 @@ const Board: React.FC<Props> = ({ board, boardDelete }) => {
   const closeNewTaskFormHandler = () => setTaskForm(false);
 
   let newTaskForm = taskForm ? (
-    <TaskForm board_id={board.id} formCloseHandler={closeNewTaskFormHandler} />
+    <TaskForm type="CREATE" board_id={board.id} formCloseHandler={closeNewTaskFormHandler} />
   ) : null;
 
   return (

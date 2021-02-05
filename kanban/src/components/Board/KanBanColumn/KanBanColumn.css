@@ -15,9 +15,11 @@
 
 .KanBanColumn h3 {
     background-color: white;
-    padding: 20px;
+    font-size: 3vw;
+    padding: 10px;
     border-bottom: 1px solid #eee;
     margin: 0;
+    margin-bottom: 10px;
 }
 
 .TasksSection {

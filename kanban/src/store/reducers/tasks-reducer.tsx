@@ -32,6 +32,10 @@ const tasksReducer = (state: State, action: any) => {
         ...state,
         tasks: { ...state.tasks, [action.newTask.id]: action.newTask },
       };
+    case "EDIT_TASK":
+      const tasksEdit ={...state.tasks}
+      tasksEdit[action.updatedTask.id] = action.updatedTask;
+      return {...state, tasks: tasksEdit} 
     case "DELETE_TASK":
       const tasksUpd = {...state.tasks};
       delete tasksUpd[action.task_id];
