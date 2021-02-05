@@ -1,25 +1,43 @@
-import React from 'react';
-import "./KanBanCard.css"
+import React, { useState } from "react";
+import "./KanBanCard.css";
 
 interface Task {
-    id: number;
-    title: string;
-    description: string;
-    severity: number;
-    column: number;
+  id: number;
+  title: string;
+  description: string;
+  severity: number;
+  column: number;
 }
 
 interface Props {
-    task: Task
-    onDragEnd: (event: React.DragEvent<HTMLDivElement>, taskID: number) => void;
+  task: Task;
+  onDragEnd: (event: React.DragEvent<HTMLDivElement>, taskID: number) => void;
 }
 
-const KanBanCard = (props:Props) => {
+const KanBanCard = (props: Props) => {
+  const [expandState, setExpand] = useState<boolean>(false);
 
-    return <div className="KanBanCard" draggable={true} onDragEnd={e => props.onDragEnd(e, props.task.id)}>
-        <div><h4>{props.task.title}</h4></div>
-        <div>{props.task.description}</div>
+  const expandHandler = () => setExpand(!expandState);
+
+  let displayDescription = <p>{props.task.description}</p>;
+  if (props.task.description.length > 60 && !expandState) {
+    displayDescription = (
+      <p className="Expandable">
+        {props.task.description.substring(0, 60)}
+        <span>...</span>
+      </p>
+    );
+  }
+  return (
+    <div
+      className="KanBanCard"
+      draggable={true}
+      onDragEnd={(e) => props.onDragEnd(e, props.task.id)}
+    >
+      <h4 className="CardTitle">{props.task.title}</h4>
+      {props.task.description.length > 0 ? <div className="CardDescription" onClick={expandHandler}>{displayDescription}</div> : null}
     </div>
-}
+  );
+};
 
-export default KanBanCard
+export default KanBanCard;

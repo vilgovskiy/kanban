@@ -2,7 +2,20 @@
     display: block;
     box-sizing: border-box;
     width: 96%;
-    margin: 5px 2% 0 2%;
-    padding: 3px;
-    border: 1px solid black;
+    margin: 0 2% 10px 2%;
+    border: 1px solid #eee;
+    background-color: #eee;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.CardTitle {
+    margin: 0;
+    background-color: white;
+    padding: 10px;
+    text-transform: capitalize;
+}
+
+.CardDescription {
+    margin: 5px;
 }
