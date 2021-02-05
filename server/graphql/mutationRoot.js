@@ -34,6 +34,24 @@ const MutationRoot = new graphql.GraphQLObjectType({
         }
       },
     },
+    delete_board: {
+      type: Board,
+      args: {
+        id: { type: graphql.GraphQLNonNull(graphql.GraphQLInt)}
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        try {
+          return (
+            await dbClient.query(
+              "DELETE FROM boards WHERE board_id = $1",
+              [args.id]
+            )
+          ).rows[0];
+        } catch (err) {
+          throw new Error(`Failed to delete board ${err}`);
+        }
+      },
+    },
     add_user: {
       type: User,
       args: {
@@ -62,7 +80,7 @@ const MutationRoot = new graphql.GraphQLObjectType({
         try {
           return (
             await dbClient.query(
-              "DELETE FROM users WHERE user_id = $1 CASCADE",
+              "DELETE FROM users WHERE user_id = $1",
               [args.id]
             )
           ).rows[0];
