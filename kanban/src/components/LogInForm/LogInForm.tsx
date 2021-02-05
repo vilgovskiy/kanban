@@ -10,6 +10,10 @@ interface FormState {
   password: string;
 }
 
+interface Errors {
+  [label: string]: string;
+}
+
 const initState = {
   username: "",
   password: "",
@@ -18,7 +22,7 @@ const initState = {
 const LogInForm: React.FC = () => {
   const { userDispatch } = useContext(UserContext);
   const [logInForm, setLogInForm] = useState<FormState>(initState);
-  const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<Errors | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
@@ -32,30 +36,62 @@ const LogInForm: React.FC = () => {
     setLogInForm(newLogInForm);
   };
 
+  const validateForm = (mode: string) => {
+    let newErrors: Errors = {};
+    if (logInForm.username.length < 1) {
+      newErrors["username"] = "Username can not be empty";
+    }
+    if (mode === "SIGNUP" && logInForm.password.length < 6) {
+      newErrors["password"] = "Password must be at least 6 characters long.";
+    } else if (logInForm.password.length < 1) {
+      newErrors["password"] = "Password can not be empty.";
+    }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return false;
+    }
+    return true;
+  };
+
   const logInHandler = (event: React.FormEvent) => {
     event.preventDefault();
+    if (!validateForm("LOGIN")) {
+      return;
+    }
     setLoading(true);
     axios
       .get(
         `/api?query={auth(name:"${logInForm.username}",password:"${logInForm.password}"){id,name,boards{id,name,,owner{id}}}}`
       )
       .then((resp) => {
-        const respData = resp.data.data;
-        if (respData.auth !== null) {
+        const respData = resp.data;
+        if (respData.data.auth !== null) {
           userDispatch({ type: "LOG_IN", user: respData.auth });
+          // Nothing needs to be done after this despatch as component will unmount.
         } else {
           setMessage(null);
-          setError("Could not log in, please check you username/password");
+          let errToSet = "Could not log in, please check you username/password";
+          if (respData.errors) {
+            errToSet = respData.errors.join("; ");
+          }
+          setErrors({
+            LOGIN: errToSet,
+          });
           setLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
+        setErrors({ LOGIN: "Opps something went terribly wrong!" });
         setLoading(false);
       });
   };
 
-  const signupHandler = () => {
+  const signupHandler = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm("SIGNUP")) {
+      return;
+    }
     setLoading(true);
     const data = {
       query: `mutation{add_user(name:"${logInForm.username}",password:"${logInForm.password}"){id,name}}`,
@@ -65,12 +101,20 @@ const LogInForm: React.FC = () => {
       .then((resp) => {
         const respData = resp.data;
         if (respData.data.add_user !== null) {
-          setError(null);
+          setErrors(null);
           setMessage(
             `Successfully created user ${respData.data.add_user.name}. Now you can log in with this username: `
           );
         } else if (respData.errors) {
-          setError(`Could not create user ${logInForm.username}`);
+          let errorMsg = ""
+          if (respData.errors[0].message.includes("duplicate key value")){
+            errorMsg = ": User with such name already exists" 
+          }
+          setErrors({
+            SIGNUP: `Could not create user ${
+              logInForm.username
+            }${errorMsg}`,
+          });
           setMessage(null);
         }
         setLoading(false);
@@ -86,7 +130,9 @@ const LogInForm: React.FC = () => {
       <h2>Hello User! </h2>
       <h3>Please sign in to view boards!</h3>
       <div className="LogInErrors">
-        {error !== null ? <p>{error}</p> : null}
+        {errors !== null
+          ? Object.keys(errors).map((errorKey) => <p key={errorKey}>{errors[errorKey]}</p>)
+          : null}
       </div>
       <div className="LogInMessages">
         {message !== null ? <p>{message}</p> : null}
@@ -95,6 +141,7 @@ const LogInForm: React.FC = () => {
       <form>
         <div className="LogInFormGroup">
           <input
+            className={errors && errors.username ? "NeedFixing" : ""}
             type="text"
             //placeholder="Username"
             value={logInForm.username}
@@ -105,6 +152,7 @@ const LogInForm: React.FC = () => {
         </div>
         <div className="LogInFormGroup">
           <input
+            className={errors && errors.password ? "NeedFixing" : ""}
             type="text"
             //placeholder="Password"
             value={logInForm.password}

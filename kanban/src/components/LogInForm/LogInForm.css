@@ -4,7 +4,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 50%;
-  height: 60vh;
+  height: fit-content;
   background-color: #ffffff;
   border-radius: 40px;
   font-size: max(2vw, 15px);
@@ -25,8 +25,6 @@
   width: 90%;
   margin: 30px;
   margin-left: 5%;
-  position: fixed;
-  bottom: 10%;
 }
 
 .LogInForm button {
@@ -62,7 +60,7 @@
 }
 .LogInFormGroup label {
   position: absolute;
-  top: 0.3em;
+  top: 0.2em;
   left: 10%;
   font-size: 1em;
   color: #555;
@@ -90,7 +88,12 @@
   color: #c850c0;
 }
 
+.LogInForm .NeedFixing {
+  background: rgba(250, 128, 114, 0.3);
+}
+
 .LogInErrors {
-  font-size: 1.4vw;
+  font-size: 0.6em;
+  background-color: rgba(250, 128, 114, 0.3);
   color: red;
 }
