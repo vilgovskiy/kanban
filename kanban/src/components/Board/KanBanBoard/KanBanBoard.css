@@ -1,0 +1,51 @@
+.KanBanBoard {
+    display: block;
+    text-align: left;
+}
+
+.BoardControls {
+    margin-left: 10%;
+    margin-top: 2vh;
+    height: 50px;
+    width: 80%;
+    text-align: left;
+    background-color: rgba(255,255,255,0.7);
+    border-radius: 30px;
+    margin-bottom: 1vh;
+}
+
+.BoardControls h1 {
+    text-align: left;
+    display: inline-block;
+    margin: 0;
+    margin-left: 5%
+}
+
+.AddTask-btn {
+    height: 80%;
+    font-size: 20px;
+    padding: 1px 8px 3px 6px ;
+    margin: 0;
+    margin-left: 1vw;
+    opacity: 0.5;
+}
+
+.AddTask-btn svg {
+    transform: translateY(7px);
+}
+
+.AddTask-btn:hover {
+    opacity: 1;
+}
+
+.DeleteIcon {
+    float: right;
+    height: 50%;
+    margin: 5px 2% 5px 0;
+    opacity: 0.5;
+    padding: 8px
+}
+
+.DeleteIcon:hover {
+    opacity: 1;
+}

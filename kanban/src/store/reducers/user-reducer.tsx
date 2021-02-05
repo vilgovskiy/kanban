@@ -23,15 +23,17 @@ interface UserState {
   };
 }
 
+const initActiveBoard = {
+  loaded: false,
+  id: -1,
+};
+
 const initState = {
   loggedIn: false,
   username: "",
   userID: null,
   boards: [],
-  activeBoard: {
-    loaded: false,
-    id: -1,
-  },
+  activeBoard: initActiveBoard
 };
 
 const userReducer = (state: UserState, action: any) => {
@@ -40,7 +42,7 @@ const userReducer = (state: UserState, action: any) => {
       let boards = action.user.boards.map((board: APIBoard) => ({
         id: board.id,
         name: board.name,
-        isOwner: board.owner.id === board.id,
+        isOwner: board.owner.id === action.user.id,
       }));
       return {
         ...state,
@@ -52,8 +54,12 @@ const userReducer = (state: UserState, action: any) => {
     case "LOG_OUT":
       return initState;
     case "ADD_BOARD":
-      const boardsUpd = [...state.boards, action.board];
-      return { ...state, boards: boardsUpd, activeBoard: {loaded: true, id: boardsUpd.length - 1} };
+      let boardsUpdAdd = [...state.boards, action.board];
+      return { ...state, boards: boardsUpdAdd, activeBoard: {loaded: true, id: boardsUpdAdd.length - 1} };
+    case "DELETE_BOARD":
+      let boardsUpdDel = state.boards.filter(board => board.id !== action.board_id)
+      console.log(boardsUpdDel)
+      return {...state, boards: boardsUpdDel, activeBoard: initActiveBoard}
     case "SET_ACTIVE_BOARD":
       return {...state, activeBoard: { loaded: true, id: action.id}}
     default:

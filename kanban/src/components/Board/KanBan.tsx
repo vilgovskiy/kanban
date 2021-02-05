@@ -26,7 +26,9 @@ const KanBan: React.FC = () => {
       tasksDispatch({ type: "TASKS_FETCH_START" });
       axios
         .get(
-          `/api?query={tasks_on_board(board_id:${userState.boards[userState.activeBoard.id].id}){id,title,description,severity,column}}`
+          `/api?query={tasks_on_board(board_id:${
+            userState.boards[userState.activeBoard.id].id
+          }){id,title,description,severity,column}}`
         )
         .then((resp) => {
           const respData = resp.data;
@@ -40,38 +42,74 @@ const KanBan: React.FC = () => {
           }
         });
     }
-  },[userState.activeBoard.id, userState.activeBoard.loaded, userState.boards ])
+  }, [
+    userState.activeBoard.id,
+    userState.activeBoard.loaded,
+    userState.boards,
+  ]);
 
   const loadBoardHandler = (boardSelection: number | null) => {
     if (boardSelection != null && boardSelection > 0) {
-      const key = userState.boards !== null ? userState.boards.findIndex(board => board.id === boardSelection) : -1
-      userDispatch({ type: "SET_ACTIVE_BOARD", id: key});
+      const key =
+        userState.boards !== null
+          ? userState.boards.findIndex((board) => board.id === boardSelection)
+          : -1;
+      userDispatch({ type: "SET_ACTIVE_BOARD", id: key });
     }
   };
 
   const createBoardHandler = (newBoardname: string) => {
-    if (!userState.loggedIn) return
+    if (!userState.loggedIn) return;
     const data = {
-      query: `mutation{add_board(name:"${newBoardname}",owner:${userState.userID}){id,name}}`
-    }
-    axios.post("/api", data)
-    .then(resp => {
-      const respData = resp.data;
-      if (respData.data.add_board !== null) {
-        // Add board to user context
-        userDispatch({type: "ADD_BOARD", board: {...respData.data.add_board, isOwner: true}})
-      }
-    }).catch(err => console.log(err))
-  }
+      query: `mutation{add_board(name:"${newBoardname}",owner:${userState.userID}){id,name}}`,
+    };
+    axios
+      .post("/api", data)
+      .then((resp) => {
+        const respData = resp.data;
+        if (respData.data.add_board !== null) {
+          // Add board to user context
+          userDispatch({
+            type: "ADD_BOARD",
+            board: { ...respData.data.add_board, isOwner: true },
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
+  const deleteBoardHandler = (board_id: number) => {
+    const data = {
+      query: `mutation{delete_board(id:${board_id}){id}}`,
+    };
+    axios
+      .post("/api", data)
+      .then((resp) => {
+        // If succeded, dispatch a delete
+        if (!resp.data.errors) {
+          userDispatch({ type: "DELETE_BOARD", board_id: board_id });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
-  let board = userState.activeBoard.loaded && userState.boards !== null? (
-    <KanBanBoard board={userState.boards[userState.activeBoard.id]} />
-  ) : null;
+  let board =
+    userState.activeBoard.loaded && userState.boards !== null ? (
+      <KanBanBoard
+        board={userState.boards[userState.activeBoard.id]}
+        boardDelete={deleteBoardHandler}
+      />
+    ) : null;
 
   return (
     <div>
-      <Toolbar user={userState.username} boards={userState.boards} createHandler={createBoardHandler} loadHandler={loadBoardHandler} logOutHandler={logOutHandler}/>
+      <Toolbar
+        user={userState.username}
+        boards={userState.boards}
+        createHandler={createBoardHandler}
+        loadHandler={loadBoardHandler}
+        logOutHandler={logOutHandler}
+      />
       {board}
     </div>
   );

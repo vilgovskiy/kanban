@@ -3,8 +3,9 @@ import React, { useContext, useState } from "react";
 import { TasksContext } from "../../../context/tasks-context";
 import TaskForm from "../../TaskForm/TaskForm";
 import KanbanColumn from "../KanBanColumn/KanBanColumn";
+import { MdAdd, MdDelete } from "react-icons/md";
 
-// Temporary locall management
+import "./KanBanBoard.css";
 
 interface Column {
   id: number;
@@ -17,6 +18,11 @@ interface BoardType {
   isOwner: boolean;
 }
 
+interface Props {
+  board: BoardType;
+  boardDelete: (board_id: number) => void;
+}
+
 const columns: Column[] = [
   { id: 0, name: "Backlog" },
   { id: 1, name: "Assigned" },
@@ -25,7 +31,7 @@ const columns: Column[] = [
   { id: 4, name: "Completed" },
 ];
 
-const Board: React.FC<{ board: BoardType }> = ({ board }) => {
+const Board: React.FC<Props> = ({ board, boardDelete }) => {
   const { tasksState, tasksDispatch } = useContext(TasksContext);
   const [taskForm, setTaskForm] = useState<boolean>(false);
 
@@ -72,24 +78,39 @@ const Board: React.FC<{ board: BoardType }> = ({ board }) => {
   ) : null;
 
   return (
-    <div>
-      <div id="BoardControls">
+    <div className="KanBanBoard">
+      <div className="BoardControls">
         <h1>{board.name}</h1>
-        <button onClick={openNewTaskFormHandler}>Add Task</button>
+        {board.isOwner ? (
+          <div
+            className="Cancel-btn DeleteIcon"
+            onClick={() => boardDelete(board.id)}
+          >
+            <MdDelete size={30} />
+          </div>
+        ) : null}
+        <div
+          className="Confirm-btn AddTask-btn"
+          onClick={openNewTaskFormHandler}
+        >
+          <MdAdd size={30} /> Add Task
+        </div>
         {newTaskForm}
       </div>
-      {columns.map((column) => (
-        <KanbanColumn
-          key={column.id}
-          name={column.name}
-          columnId={column.id}
-          tasks={Object.values(tasks).filter(
-            (task) => task.column === column.id
-          )}
-          onDragEnter={onDragEnterHandler}
-          onDragEnd={onDragEndHandler}
-        />
-      ))}
+      <div className="Columns">
+        {columns.map((column) => (
+          <KanbanColumn
+            key={column.id}
+            name={column.name}
+            columnId={column.id}
+            tasks={Object.values(tasks).filter(
+              (task) => task.column === column.id
+            )}
+            onDragEnter={onDragEnterHandler}
+            onDragEnd={onDragEndHandler}
+          />
+        ))}
+      </div>
     </div>
   );
 };
