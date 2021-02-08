@@ -143,23 +143,25 @@ const LogInForm: React.FC = () => {
           <input
             className={errors && errors.username ? "NeedFixing" : ""}
             type="text"
-            //placeholder="Username"
+            id="username"
+            placeholder="Username"
             value={logInForm.username}
             onChange={(e) => inputChangeHandler(e, "username")}
             required
           />
-          <label>Username</label>
+          <label htmlFor="username">Username</label>
         </div>
         <div className="LogInFormGroup">
           <input
             className={errors && errors.password ? "NeedFixing" : ""}
-            type="text"
-            //placeholder="Password"
+            type="password"
+            id="password"
+            placeholder="Password"
             value={logInForm.password}
             onChange={(e) => inputChangeHandler(e, "password")}
             required
           />
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
         </div>
         <button onClick={logInHandler}>Log in</button>
         <button onClick={signupHandler}>Sign up</button>

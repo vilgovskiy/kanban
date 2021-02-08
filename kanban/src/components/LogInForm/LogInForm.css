@@ -64,6 +64,7 @@
   left: 10%;
   font-size: 1em;
   transition: all 0.5s ease-in-out;
+  cursor: text;
 }
 .LogInFormGroup input {
   border: 0;
@@ -73,6 +74,11 @@
   padding: 8px 0 1px 0;
   font-size: 1em;
 }
+
+.LogInForm input::placeholder {
+  color: transparent;
+}
+
 .LogInFormGroup input:focus {
   border: none;
   outline: none;
