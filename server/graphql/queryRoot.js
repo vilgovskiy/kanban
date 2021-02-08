@@ -36,6 +36,28 @@ const QueryRoot = new graphql.GraphQLObjectType({
       },
     },
 
+    users_on_board: {
+      type: new graphql.GraphQLList(User),
+      description: "Return all users that have acces to board board_id",
+      args: {
+        board_id: { type: graphql.GraphQLInt },
+      },
+      resolve: async (parent, args, context, resolveInfo) => {
+        try {
+          return (
+            await dbClient.query(
+              "SELECT users.user_id AS id, users.name AS name FROM users JOIN boards_members ON users.user_id = boards_members.user_id WHERE boards_members.board_id = $1",
+              [
+                args.board_id,
+              ]
+            )
+          ).rows
+        } catch (err) {
+          throw new Error(`Failed to get users that are members of board ${args.board_id} ${err}`);
+        }
+      },
+    },
+
     auth: {
       type: User,
       description: "Returns user info and all boards this user has access to",
