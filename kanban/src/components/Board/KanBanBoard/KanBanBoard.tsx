@@ -3,9 +3,10 @@ import React, { useContext, useState } from "react";
 import { TasksContext } from "../../../context/tasks-context";
 import TaskForm from "../../TaskForm/TaskForm";
 import KanbanColumn from "../KanBanColumn/KanBanColumn";
-import { MdAdd, MdDelete } from "react-icons/md";
+import { MdAdd, MdDelete, MdPeople } from "react-icons/md";
 
 import "./KanBanBoard.css";
+import AccessControl from "../../AccessControl/AccessControl";
 
 interface Column {
   id: number;
@@ -19,6 +20,7 @@ interface BoardType {
 }
 
 interface Props {
+  userID: number | null;
   board: BoardType;
   boardDelete: (board_id: number) => void;
 }
@@ -31,9 +33,12 @@ const columns: Column[] = [
   { id: 4, name: "Completed" },
 ];
 
-const Board: React.FC<Props> = ({ board, boardDelete }) => {
+const Board: React.FC<Props> = ({userID, board, boardDelete }) => {
   const { tasksState, tasksDispatch } = useContext(TasksContext);
   const [taskForm, setTaskForm] = useState<boolean>(false);
+  const [accessControlActive, setAccessControlActive] = useState<boolean>(
+    false
+  );
 
   let tasks = tasksState.tasks;
 
@@ -74,47 +79,71 @@ const Board: React.FC<Props> = ({ board, boardDelete }) => {
     const data = {
       query: `mutation{delete_task(id:${task_id}){id}}`,
     };
-    axios.post("/api", data).then((resp) => {
-      const respData = resp.data;
-      if (
-        respData.data.delete_task != null &&
-        respData.data.delete_task.id === task_id
-      ) {
-        tasksDispatch({ type: "DELETE_TASK", task_id: task_id });
-      } else if (respData.errors) {
-        console.log(respData.errors);
-      }
-    })
-    .catch(err => console.log(err));
+    axios
+      .post("/api", data)
+      .then((resp) => {
+        const respData = resp.data;
+        if (
+          respData.data.delete_task != null &&
+          respData.data.delete_task.id === task_id
+        ) {
+          tasksDispatch({ type: "DELETE_TASK", task_id: task_id });
+        } else if (respData.errors) {
+          console.log(respData.errors);
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   const openNewTaskFormHandler = () => setTaskForm(true);
   const closeNewTaskFormHandler = () => setTaskForm(false);
 
-  let newTaskForm = taskForm ? (
-    <TaskForm type="CREATE" board_id={board.id} formCloseHandler={closeNewTaskFormHandler} />
+  const openAccesControlHandler = () => setAccessControlActive(true);
+  const closeAccesControlHandler = () => setAccessControlActive(false);
+
+  const newTaskForm = taskForm ? (
+    <TaskForm
+      type="CREATE"
+      board_id={board.id}
+      formCloseHandler={closeNewTaskFormHandler}
+    />
   ) : null;
 
-  return (
-    <div className="KanBanBoard">
-      <div className="BoardControls">
-        <h1>{board.name}</h1>
-        {board.isOwner ? (
+  const accessControlElement = accessControlActive ? <AccessControl user_id={userID} board_id={board.id} closeHandler={closeAccesControlHandler} /> : null;
+
+  const boardControls = (
+    <div className="BoardControls">
+      <h1>{board.name}</h1>
+      <div
+        className="General-btn Confirm-btn AddTask"
+        onClick={openNewTaskFormHandler}
+      >
+        <MdAdd size={30} /> Add Task
+      </div>
+      {board.isOwner ? (
+        <React.Fragment>
           <div
-            className="Cancel-btn DeleteIcon"
+            className="General-btn Cancel-btn DeleteIcon"
             onClick={() => boardDelete(board.id)}
           >
             <MdDelete size={30} />
           </div>
-        ) : null}
-        <div
-          className="Confirm-btn AddTask-btn"
-          onClick={openNewTaskFormHandler}
-        >
-          <MdAdd size={30} /> Add Task
-        </div>
-        {newTaskForm}
-      </div>
+          <div
+            className="General-btn Warning-btn AccessControlButton"
+            onClick={openAccesControlHandler}
+          >
+            <MdPeople size={30} /> Access control
+          </div>
+        </React.Fragment>
+      ) : null}
+      {newTaskForm}
+      {accessControlElement}
+    </div>
+  );
+
+  return (
+    <div className="KanBanBoard">
+      {boardControls}
       <div className="Columns">
         {columns.map((column) => (
           <KanbanColumn
