@@ -27,7 +27,6 @@ const MutationRoot = new graphql.GraphQLObjectType({
             "INSERT INTO boards_members (board_id, user_id) VALUES ($1, $2)",
             [newBoardRecord.rows[0].id, args.owner]
           );
-          console.log("created new board");
           return newBoardRecord.rows[0];
         } catch (err) {
           throw new Error(`Failed to insert new board ${err}`);

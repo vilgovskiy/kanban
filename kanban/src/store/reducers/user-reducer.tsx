@@ -58,7 +58,6 @@ const userReducer = (state: UserState, action: any) => {
       return { ...state, boards: boardsUpdAdd, activeBoard: {loaded: true, id: boardsUpdAdd.length - 1} };
     case "DELETE_BOARD":
       let boardsUpdDel = state.boards.filter(board => board.id !== action.board_id)
-      console.log(boardsUpdDel)
       return {...state, boards: boardsUpdDel, activeBoard: initActiveBoard}
     case "SET_ACTIVE_BOARD":
       return {...state, activeBoard: { loaded: true, id: action.id}}

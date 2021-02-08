@@ -18,7 +18,6 @@ const QueryRoot = new graphql.GraphQLObjectType({
       description: "Returns all users in users table",
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster.default(resolveInfo, {}, (sql) => {
-          console.log(sql);
           return dbClient.query(sql);
         });
       },
@@ -73,7 +72,6 @@ const QueryRoot = new graphql.GraphQLObjectType({
       },
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster.default(resolveInfo, {}, (sql) => {
-          console.log(sql);
           return dbClient.query(sql);
         });
       },
@@ -85,7 +83,6 @@ const QueryRoot = new graphql.GraphQLObjectType({
         "Returns all boards in boards table and their corresponding owners",
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster.default(resolveInfo, {}, (sql) => {
-          console.log(sql);
           return dbClient.query(sql);
         });
       },
@@ -99,7 +96,6 @@ const QueryRoot = new graphql.GraphQLObjectType({
         `${boardTable}.board_id = ${args.id}`,
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster.default(resolveInfo, {}, (sql) => {
-          console.log(sql);
           return dbClient.query(sql);
         });
       },
@@ -117,7 +113,6 @@ const QueryRoot = new graphql.GraphQLObjectType({
       },
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster.default(resolveInfo, {}, (sql) => {
-          console.log(sql);
           return dbClient.query(sql);
         });
       },
@@ -135,7 +130,6 @@ const QueryRoot = new graphql.GraphQLObjectType({
       },
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster.default(resolveInfo, {}, (sql) => {
-          console.log(sql);
           return dbClient.query(sql);
         });
       },

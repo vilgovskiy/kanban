@@ -61,7 +61,6 @@ const TaskForm = (props: Props) => {
         props.board_id
       }){id,title,description,severity,column}}`,
     };
-    console.log(data.query);
     axios
       .post("/api", data)
       .then((resp) => {
@@ -91,7 +90,6 @@ const TaskForm = (props: Props) => {
         taskForm.severity
       }){id,title,description,severity,column}}`,
     };
-    console.log(data.query);
     axios
       .post("/api", data)
       .then((resp) => {
@@ -108,7 +106,7 @@ const TaskForm = (props: Props) => {
           };
           tasksDispatch({ type: "EDIT_TASK", updatedTask: updatedTask });
         } else if (respData.errors) {
-          console.log(respData.errors);
+          console.log(respData.errors[0].message)
         }
       })
       .catch((err) => console.log(err));

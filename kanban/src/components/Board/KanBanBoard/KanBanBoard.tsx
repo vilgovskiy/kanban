@@ -69,9 +69,13 @@ const Board: React.FC<Props> = ({userID, board, boardDelete }) => {
       };
       axios
         .post("/api", data)
-        .then((resp) => console.log(resp))
+        .then((resp) => {
+          const respdata = resp.data
+          if (respdata.data.move_task !== null && respdata.data.move_task.id === taskID){
+            tasksDispatch({ type: "TASK_UPDATE", taskID: taskID });
+          }
+        })
         .catch((err) => console.log(err));
-      tasksDispatch({ type: "TASK_UPDATE", taskID: taskID });
     }
   };
 
