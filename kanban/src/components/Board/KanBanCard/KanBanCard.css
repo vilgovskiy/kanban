@@ -17,13 +17,20 @@
 }
 
 .CardTitle h4 {
-  display: inline;
+  margin: 0;
+  display: inline-block;
+  width: calc(100% - 65px);
   color: rgb(52, 58, 64);
 }
 
 .CardChangeIcons {
   float: right;
-  margin-left: 10px;
+}
+
+.CardChangeIcon {
+  /* float: right; */
+  display: inline-block;
+  margin-left: 5px;
   background-color: white;
   color: rgba(52, 58, 64, 0.5);
   transition: 0.3s;
@@ -31,7 +38,7 @@
   padding: 3px;
 }
 
-.CardChangeIcons:hover {
+.CardChangeIcon:hover {
   background-color: rgba(52, 58, 64, 0.5);
   color: white;
 }

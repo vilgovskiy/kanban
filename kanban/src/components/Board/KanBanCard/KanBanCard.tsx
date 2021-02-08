@@ -17,16 +17,16 @@ interface Props {
   onTaskDelete: (task_id: number) => void;
 }
 
-const severity_class_mapping: {[id: number]:string} = {
+const severity_class_mapping: { [id: number]: string } = {
   0: " SevLow",
   1: " SevMedium",
   2: " SevHigh",
-  3: " SevExtreme"
-}
+  3: " SevExtreme",
+};
 
 const KanBanCard = (props: Props) => {
   const [expandState, setExpand] = useState<boolean>(false);
-  const [editFormActive, setEditFormActive] = useState<boolean>(false)
+  const [editFormActive, setEditFormActive] = useState<boolean>(false);
 
   const expandHandler = () => setExpand(!expandState);
 
@@ -40,12 +40,18 @@ const KanBanCard = (props: Props) => {
     );
   }
 
-  const handleOpenEditForm = () => setEditFormActive(true)
-  const handleCloseEditForm = () => setEditFormActive(false)
+  const handleOpenEditForm = () => setEditFormActive(true);
+  const handleCloseEditForm = () => setEditFormActive(false);
 
-  const editFormComponent = editFormActive ? <TaskForm type="EDIT" task={props.task} formCloseHandler={handleCloseEditForm} /> : null
+  const editFormComponent = editFormActive ? (
+    <TaskForm
+      type="EDIT"
+      task={props.task}
+      formCloseHandler={handleCloseEditForm}
+    />
+  ) : null;
 
-  const severityBasedStyle = severity_class_mapping[props.task.severity]
+  const severityBasedStyle = severity_class_mapping[props.task.severity];
   return (
     <div
       className={"KanBanCard" + severityBasedStyle}
@@ -55,11 +61,16 @@ const KanBanCard = (props: Props) => {
       <div className="CardTitle">
         {editFormComponent}
         <h4>{props.task.title}</h4>
-        <div className="CardChangeIcons" onClick={()=>props.onTaskDelete(props.task.id)}>
-          <MdDelete size={20} />
-        </div>
-        <div className="CardChangeIcons" onClick={handleOpenEditForm}>
-          <MdEdit size={20}/>
+        <div className="CardChangeIcons">
+          <div className="CardChangeIcon" onClick={handleOpenEditForm}>
+            <MdEdit size={20} />
+          </div>
+          <div
+            className="CardChangeIcon"
+            onClick={() => props.onTaskDelete(props.task.id)}
+          >
+            <MdDelete size={20} />
+          </div>
         </div>
       </div>
       {props.task.description.length > 0 ? (
