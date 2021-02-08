@@ -66,7 +66,7 @@ const LogInForm: React.FC = () => {
       .then((resp) => {
         const respData = resp.data;
         if (respData.data.auth !== null) {
-          userDispatch({ type: "LOG_IN", user: respData.auth });
+          userDispatch({ type: "LOG_IN", user: respData.data.auth });
           // Nothing needs to be done after this despatch as component will unmount.
         } else {
           setMessage(null);
