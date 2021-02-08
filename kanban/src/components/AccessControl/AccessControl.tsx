@@ -47,7 +47,7 @@ const AccessControl = (props: Props) => {
       return;
     }
     const data = {
-      query: `mutation{add_user_to_board(board:${props.board_id},user"${addUserNameState}"){id,name}}`,
+      query: `mutation{add_user_to_board(board:${props.board_id},user:"${addUserNameState}"){id,name}}`,
     };
     axios
       .post("/api", data)
