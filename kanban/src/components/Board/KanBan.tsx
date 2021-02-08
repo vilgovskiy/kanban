@@ -96,6 +96,7 @@ const KanBan: React.FC = () => {
   let board =
     userState.activeBoard.loaded && userState.boards !== null ? (
       <KanBanBoard
+        userID={userState.userID}
         board={userState.boards[userState.activeBoard.id]}
         boardDelete={deleteBoardHandler}
       />
