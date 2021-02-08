@@ -34,7 +34,7 @@
 .ToolbarControls {
   display: inline-block;
   box-sizing: border-box;
-  width: 60%;
+  width: 50%;
   height: 100%;
   text-align: center;
   padding: 1vw 0;
@@ -43,7 +43,7 @@
 .BoardSelection {
   display: inline-block;
   margin: 1vw;
-  height: 30px;
+  width: 100%;
 }
 
 .BoardSelection label {
@@ -53,8 +53,10 @@
 .BoardSelection select {
   display: inline-block;
   box-sizing: border-box;
-  height: 100%;
-  border: 1px solid #d3d3d3;
+  padding: 2px;
+  font-size: 1.3em;
+  vertical-align: middle;
+  border: 1px solid #eee;
   background-color: #eee;
 }
 
@@ -74,12 +76,14 @@
   box-sizing: border-box;
   height: 100%;
   background-color: #eee;
-  margin-left: 5px;
   border: 0;
+  vertical-align: middle;
   text-align: center;
   text-transform: uppercase;
-  font-size: 1em;
+  font-size: 1.3em;
+  padding: 0.2em;
   color: #c850c0;
+  margin-left: 1px ;
   transition: 0.5s;
 }
 
