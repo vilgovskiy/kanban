@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { MdAdd } from "react-icons/md";
 import "./Toolbar.css";
 
 interface Board {
@@ -10,7 +11,7 @@ interface Board {
 interface Props {
   user: string;
   boards: Board[];
-  createHandler: (newBoardName: string) => void
+  createHandler: (newBoardName: string) => void;
   loadHandler: (boardSelection: number | null) => void;
   logOutHandler: () => void;
 }
@@ -28,20 +29,31 @@ const Toolbar = (props: Props) => {
     setBoardSelection(+e.target.value);
   };
 
-  const boardNameInputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const boardNameInputChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setBoardCreateInput(event.target.value);
-  }
+  };
 
-  const boardCreationElement = <div>
-    <label>Create a board</label>
-    <input type="text" value={boardCreateInput} placeholder="New board name" onChange={boardNameInputChangeHandler}/>
-    <button onClick={() => props.createHandler(boardCreateInput)}>Create</button>
-  </div>
+  const boardCreationElement = (
+    <div className="GeneralInput">
+      <label>Create a board</label>
+      <input
+        type="text"
+        value={boardCreateInput}
+        placeholder="New board name"
+        onChange={boardNameInputChangeHandler}
+      />
+      <button onClick={() => props.createHandler(boardCreateInput)}>
+        <MdAdd size={30} />
+      </button>
+    </div>
+  );
 
   const boardSelectionElement =
     props.boards.length > 0 ? (
       <div className="BoardSelection">
-        <label>Or select a board:</label>
+        <label>Or select existing:</label>
         <select id="BoardSelection" onChange={boardSelectionChangeHandler}>
           {props.boards.map((board) => (
             <option key={board.id} value={board.id}>
@@ -60,10 +72,19 @@ const Toolbar = (props: Props) => {
 
   return (
     <div className="Toolbar">
-      <h3>Hello <span style={{fontSize: (5/props.user.length) + "em"}}>{props.user}!</span></h3>
-      <button className="LogOutButton" onClick={props.logOutHandler}>Log out</button>
-      {boardCreationElement}
-      {boardSelectionElement}
+      <div className="ToolbarControls">
+        {boardCreationElement}
+        {boardSelectionElement}
+      </div>
+      <h3>
+        Hello{" "}
+        <span style={{ fontSize: 5 / props.user.length + "em" }}>
+          {props.user}!
+        </span>
+      </h3>
+      <button className="LogOutButton" onClick={props.logOutHandler}>
+        Log out
+      </button>
     </div>
   );
 };
