@@ -17,6 +17,13 @@ interface Props {
   onTaskDelete: (task_id: number) => void;
 }
 
+const severity_class_mapping: {[id: number]:string} = {
+  0: " SevLow",
+  1: " SevMedium",
+  2: " SevHigh",
+  3: " SevExtreme"
+}
+
 const KanBanCard = (props: Props) => {
   const [expandState, setExpand] = useState<boolean>(false);
   const [editFormActive, setEditFormActive] = useState<boolean>(false)
@@ -37,9 +44,11 @@ const KanBanCard = (props: Props) => {
   const handleCloseEditForm = () => setEditFormActive(false)
 
   const editFormComponent = editFormActive ? <TaskForm type="EDIT" task={props.task} formCloseHandler={handleCloseEditForm} /> : null
+
+  const severityBasedStyle = severity_class_mapping[props.task.severity]
   return (
     <div
-      className="KanBanCard"
+      className={"KanBanCard" + severityBasedStyle}
       draggable={true}
       onDragEnd={(e) => props.onDragEnd(e, props.task.id)}
     >

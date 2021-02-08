@@ -1,42 +1,58 @@
 .KanBanCard {
-    display: block;
-    box-sizing: border-box;
-    width: 96%;
-    margin: 0 2% 10px 2%;
-    border: 1px solid #eee;
-    background-color: #eee;
-    border-radius: 10px;
-    overflow: hidden;
+  display: block;
+  box-sizing: border-box;
+  width: 96%;
+  margin: 0 2% 10px 2%;
+  border: 1px solid #eee;
+  background-color: #eee;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .CardTitle {
-    margin: 0;
-    background-color: white;
-    padding: 10px;
-    text-transform: capitalize;
+  margin: 0;
+  background-color: white;
+  padding: 10px;
+  text-transform: capitalize;
 }
 
 .CardTitle h4 {
-    display: inline;
-    color: rgb(52, 58, 64);
+  display: inline;
+  color: rgb(52, 58, 64);
 }
 
 .CardChangeIcons {
-    float: right;
-    margin-left: 10px;
-    background-color: white;
-    color: rgba(52, 58, 64, 0.5);
-    transition: 0.3s;
-    border-radius: 30%;
-    padding: 3px;
+  float: right;
+  margin-left: 10px;
+  background-color: white;
+  color: rgba(52, 58, 64, 0.5);
+  transition: 0.3s;
+  border-radius: 30%;
+  padding: 3px;
 }
 
 .CardChangeIcons:hover {
-    background-color: rgba(52, 58, 64, 0.5);
-    color: white;
+  background-color: rgba(52, 58, 64, 0.5);
+  color: white;
 }
 
 .CardDescription {
-    margin: 5px;
-    transition: all 0.3s ease-in-out;
+  margin: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.SevLow {
+  border-left: 3px solid aquamarine;
+}
+
+.SevMedium {
+  border-left: 3px solid yellow;
+}
+
+.SevHigh {
+  border-left: 3px solid orange;
+}
+
+.SevExtreme {
+  border: 2px solid red;
 }
