@@ -1,6 +1,6 @@
 import axios from "../../axios-api";
 import React, { useEffect, useState } from "react";
-import { MdClose, MdDelete, MdPersonAdd } from "react-icons/md";
+import { MdClose, MdDelete, MdPersonAdd, MdRemoveCircleOutline } from "react-icons/md";
 
 import "./AccessControl.css";
 
@@ -39,7 +39,7 @@ const AccessControl = (props: Props) => {
         console.log(err);
         setError("Something went horribly wrong!");
       });
-  }, [props.board_id]);
+  }, [props.board_id, props.user_id]);
 
   const addUserToBoardHandler = () => {
     if (addUserNameState.length < 1) {
@@ -101,11 +101,11 @@ const AccessControl = (props: Props) => {
       <div className="Backdrop" onClick={props.closeHandler} />
       <div className="AccessControl">
         <h3>Access Control</h3>
-        <div onClick={props.closeHandler}>
+        <div className="CloseIcon" onClick={props.closeHandler}>
           <MdClose size={30} />
         </div>
         {error ? <div className="Errors">{error}</div> : null}
-        <div className="AddUserInput">
+        <div className="GeneralInput">
           <label>Add user</label>
           <input
             type="text"
@@ -114,18 +114,19 @@ const AccessControl = (props: Props) => {
             onChange={userNameChangeHandler}
           />
           <button
-            className="General-btn Confirm-btn"
+            // className="General-btn Confirm-btn"
             onClick={addUserToBoardHandler}
           >
             <MdPersonAdd size={30} />
           </button>
         </div>
+        <h5>Users have access to this board:</h5>
         <div className="CurrentUsers">
           {currentUsers.map((user) => (
             <div className="CurrentUser" key={user.id}>
               {user.name}
               <button onClick={() => removeUserFromBoardHandler(user.id)}>
-                <MdDelete size={20} />
+                <MdRemoveCircleOutline size={25} />
               </button>
             </div>
           ))}

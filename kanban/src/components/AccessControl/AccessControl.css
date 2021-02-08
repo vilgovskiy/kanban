@@ -11,3 +11,56 @@
   z-index: 11;
   text-align: center;
 }
+
+.AccessControl h3 {
+  display: inline-block;
+}
+
+.AccessControl h5 {
+  margin: 0;
+  margin-top: 30px;
+  width: 80%;
+  margin-left: 11%;
+  text-align: left;
+}
+
+.CloseIcon {
+  display: inline-block;
+  float: right;
+  margin-right: 1.5vw;
+  margin-top: 1vw;
+}
+
+.CurrentUsers {
+  width: 80%;
+  margin-left: 10%;
+  margin-bottom: 10px;
+  border: 2px solid #efefef;
+  border-radius: 10px;
+  text-align: left;
+}
+.CurrentUser {
+  box-sizing: border-box;
+  transition: all 0.3s;
+  padding: 8px;
+}
+
+.CurrentUser:hover {
+  background-color: #efefef;
+}
+
+.CurrentUser button {
+  float: right;
+  border: none;
+  border-radius: 5px;
+  background-color: transparent;
+  color: lightgray;
+  transition: all 0.3s;
+  font-size: 1em;
+}
+
+.CurrentUser button:hover {
+  color: inherit;
+}
+
+
