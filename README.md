@@ -7,4 +7,16 @@ This is an example KanBan board application that consists of 3 components:
 
 Navigate to the respective folder to learn more about each component (* Database is located in server folder)
 
-## Live demo is under way
+## Live demo is under way  
+## Screenshots
+#### Main view of the application: The Board
+![Main board view](https://github.com/vilgovskiy/kanban/blob/master/Screenshots/kanban-board-view.JPG "Main view of the application: The Board")
+
+#### Log In view
+![Log in view](https://github.com/vilgovskiy/kanban/blob/master/Screenshots/kanban-login-view.JPG "Log In view")
+
+#### Task creation view
+![Task Creation view](https://github.com/vilgovskiy/kanban/blob/master/Screenshots/kanban-task-creation-view.JPG "Task Creation view")
+
+#### Access Control view
+![Access Control view](https://github.com/vilgovskiy/kanban/blob/master/Screenshots/kanban-access-control-view.JPG "Access Control view")
