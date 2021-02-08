@@ -29,7 +29,7 @@
     opacity: 0.5;
 }
 
-.AddTask svg {
+.AddTask>svg {
     transform: translateY(7px);
 }
 
@@ -58,10 +58,10 @@
     font-size: 20px;
 }
 
-.AccessControl svg {
+.AccessControlButton>svg {
     transform: translateY(7px);
 }
 
-.AccessControl:hover{
+.AccessControlButton:hover{
     opacity: 1;
 }

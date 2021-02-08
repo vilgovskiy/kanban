@@ -103,6 +103,10 @@
   background-color: lightgray;
 }
 
+.GeneralInput button:focus {
+outline: none;
+}
+
 .Errors {
   width: 100%;
   background-color: rgba(250, 126, 112, 0.6);

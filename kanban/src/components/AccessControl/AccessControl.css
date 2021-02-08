@@ -34,7 +34,7 @@
 .CurrentUsers {
   width: 80%;
   margin-left: 10%;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   border: 2px solid #efefef;
   border-radius: 10px;
   text-align: left;
@@ -43,10 +43,6 @@
   box-sizing: border-box;
   transition: all 0.3s;
   padding: 8px;
-}
-
-.CurrentUser:hover {
-  background-color: #efefef;
 }
 
 .CurrentUser button {
@@ -61,6 +57,7 @@
 
 .CurrentUser button:hover {
   color: inherit;
+  background-color: #efefef;
 }
 
 
