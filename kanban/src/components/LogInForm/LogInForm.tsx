@@ -41,6 +41,9 @@ const LogInForm: React.FC = () => {
     if (logInForm.username.length < 1) {
       newErrors["username"] = "Username can not be empty";
     }
+    if (logInForm.username.includes(' ')){
+      newErrors["username"] = "Username can not contain spaces";
+    }
     if (mode === "SIGNUP" && logInForm.password.length < 6) {
       newErrors["password"] = "Password must be at least 6 characters long.";
     } else if (logInForm.password.length < 1) {
