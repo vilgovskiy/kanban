@@ -60,3 +60,51 @@
   opacity: 0.5;
   z-index: 10;
 }
+
+.GeneralInput {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.GeneralInput input {
+  font-size: 1em;
+  line-height: 2.4rem;
+  padding-left: 3%;
+  vertical-align: middle;
+  border: none;
+  border-radius: 2px 0 0 2px;
+  background-color: #efefef;
+}
+
+.GeneralInput input:focus {
+  outline: none;
+}
+
+.GeneralInput label {
+  margin-right: 0.5vw ;
+  font-size: 1em;
+  line-height: 2.4rem;
+  vertical-align: middle;
+}
+
+.GeneralInput button {
+  background-color: #efefef;
+  border: none;
+  border-radius: 0 2px 2px 0;
+  color:  inherit;
+  font-size: 2.4rem;
+  line-height: 2.4rem;
+  vertical-align: middle;
+  transition: all .3s;
+}
+
+.GeneralInput button:hover {
+  color: white;
+  background-color: lightgray;
+}
+
+.Errors {
+  width: 100%;
+  background-color: rgba(250, 126, 112, 0.6);
+  font-size: 0.7em;
+}
