@@ -99,8 +99,8 @@ const MutationRoot = new graphql.GraphQLObjectType({
         try {
           return (
             await dbClient.query(
-              "DELETE FROM boards_members WHERE user_id = $1 AND board_id = $2",
-              [args.user_id, board_id]
+              "DELETE FROM boards_members WHERE user_id = $1 AND board_id = $2 RETURNING user_id as id",
+              [args.user_id, args.board_id]
             )
           ).rows[0];
         } catch (err) {
