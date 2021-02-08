@@ -129,7 +129,7 @@ const LogInForm: React.FC = () => {
     <div className="LogInForm">
       <h2>Hello User! </h2>
       <h3>Please sign in to view boards!</h3>
-      <div className="LogInErrors">
+      <div className="Errors">
         {errors !== null
           ? Object.keys(errors).map((errorKey) => <p key={errorKey}>{errors[errorKey]}</p>)
           : null}

@@ -88,12 +88,6 @@
   resize: none;
 }
 
-.TaskCreationErrors {
-    width: 100%;
-    background-color: rgba(250, 126, 112, 0.6);
-    font-size: 0.7em;
-}
-
 @media(max-width:700px){
     .TaskFormWrapper {
         width: 90%;

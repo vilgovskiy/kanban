@@ -137,7 +137,7 @@ const TaskForm = (props: Props) => {
       <div className="TaskFormWrapper">
         <div className="TaskForm">
           {props.type === "CREATE" ? <h3>Create new task</h3>: <h3>Edit task</h3>}
-          <div className="TaskCreationErrors">{error}</div>
+          <div className="Errors">{error}</div>
           <form onSubmit={(e) => e.preventDefault()}>
             <div className="TaskFormElement" id="TaskTitle">
               <input
