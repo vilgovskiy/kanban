@@ -1,4 +1,4 @@
-.Backdrop {
+/* .Backdrop {
   position: absolute;
   top: 0;
   left: 0;
@@ -7,7 +7,7 @@
   background-color: black;
   opacity: 0.5;
   z-index: 10;
-}
+} */
 
 .TaskFormWrapper {
   position: fixed;

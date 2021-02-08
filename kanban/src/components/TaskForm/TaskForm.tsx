@@ -174,10 +174,10 @@ const TaskForm = (props: Props) => {
                 </option>
               </select>
             </div>
-            <button className="Confirm-btn" onClick={props.type === "CREATE" ? addTaskHandler : updateTaskHandler}>
+            <button className="General-btn Confirm-btn" onClick={props.type === "CREATE" ? addTaskHandler : updateTaskHandler}>
               Accept
             </button>
-            <button className="Cancel-btn" onClick={props.formCloseHandler}>
+            <button className="General-btn Cancel-btn" onClick={props.formCloseHandler}>
               Cancel
             </button>
           </form>
