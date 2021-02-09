@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/kanban/static/css/main.679e900e.chunk.css",
+    "main.js": "/kanban/static/js/main.8ba9d79e.chunk.js",
+    "main.js.map": "/kanban/static/js/main.8ba9d79e.chunk.js.map",
+    "runtime-main.js": "/kanban/static/js/runtime-main.373e3093.js",
+    "runtime-main.js.map": "/kanban/static/js/runtime-main.373e3093.js.map",
+    "static/js/2.15e858ad.chunk.js": "/kanban/static/js/2.15e858ad.chunk.js",
+    "static/js/2.15e858ad.chunk.js.map": "/kanban/static/js/2.15e858ad.chunk.js.map",
+    "static/js/3.c275b5f5.chunk.js": "/kanban/static/js/3.c275b5f5.chunk.js",
+    "static/js/3.c275b5f5.chunk.js.map": "/kanban/static/js/3.c275b5f5.chunk.js.map",
+    "index.html": "/kanban/index.html",
+    "static/css/main.679e900e.chunk.css.map": "/kanban/static/css/main.679e900e.chunk.css.map",
+    "static/js/2.15e858ad.chunk.js.LICENSE.txt": "/kanban/static/js/2.15e858ad.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.373e3093.js",
+    "static/js/2.15e858ad.chunk.js",
+    "static/css/main.679e900e.chunk.css",
+    "static/js/main.8ba9d79e.chunk.js"
+  ]
+}
