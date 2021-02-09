@@ -44,7 +44,7 @@ app.use(
   "/api",
   graphqlHTTP({
     schema: GraphSchema,
-    graphiql: true,
+    graphiql: false,
   })
 );
 
