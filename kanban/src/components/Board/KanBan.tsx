@@ -46,6 +46,7 @@ const KanBan: React.FC = () => {
     userState.activeBoard.id,
     userState.activeBoard.loaded,
     userState.boards,
+    tasksDispatch
   ]);
 
   const loadBoardHandler = (boardSelection: number | null) => {
