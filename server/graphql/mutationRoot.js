@@ -1,7 +1,10 @@
 const graphql = require("graphql");
 const dbClient = require("../db/dbConnection");
 const joinMonster = require("join-monster");
+const bcrypt = require('bcrypt');
 const { User, Board, Task } = require("./objectsDef");
+const salt = require('../secure/salt');
+
 
 const MutationRoot = new graphql.GraphQLObjectType({
   name: "Mutation",
@@ -58,10 +61,11 @@ const MutationRoot = new graphql.GraphQLObjectType({
       },
       resolve: async (parent, args, context, resolveInfo) => {
         try {
+          var encPassword = bcrypt.hashSync(args.password, salt);
           return (
             await dbClient.query(
               "INSERT INTO users (name, password) VALUES ($1, $2) RETURNING user_id as id, name",
-              [args.name, args.password]
+              [args.name, encPassword]
             )
           ).rows[0];
         } catch (err) {
@@ -124,7 +128,7 @@ const MutationRoot = new graphql.GraphQLObjectType({
             "INSERT INTO boards_members (board_id, user_id) VALUES ($1, $2) RETURNING board_id, user_id as id",
             [args.board, userRecord.rows[0].id]
           );
-          return userRecord.rows[0]
+          return userRecord.rows[0];
         } catch (err) {
           throw new Error(`Failed to add user to board ${args.board}: ${err}`);
         }

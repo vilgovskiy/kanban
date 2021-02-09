@@ -1,6 +1,9 @@
 const graphql = require("graphql");
 const dbClient = require("../db/dbConnection");
 const joinMonster = require("join-monster");
+const bcrypt = require("bcrypt");
+
+const salt = require("../secure/salt");
 
 const { User, Board, Task } = require("./objectsDef");
 
@@ -46,13 +49,13 @@ const QueryRoot = new graphql.GraphQLObjectType({
           return (
             await dbClient.query(
               "SELECT users.user_id AS id, users.name AS name FROM users JOIN boards_members ON users.user_id = boards_members.user_id WHERE boards_members.board_id = $1",
-              [
-                args.board_id,
-              ]
+              [args.board_id]
             )
-          ).rows
+          ).rows;
         } catch (err) {
-          throw new Error(`Failed to get users that are members of board ${args.board_id} ${err}`);
+          throw new Error(
+            `Failed to get users that are members of board ${args.board_id} ${err}`
+          );
         }
       },
     },
@@ -66,8 +69,10 @@ const QueryRoot = new graphql.GraphQLObjectType({
       },
       extensions: {
         joinMonster: {
-          where: (userTable, args, context) =>
-            `${userTable}.name = '${args.name}' AND ${userTable}.password = '${args.password}'`,
+          where: (userTable, args, context) => {
+            var encPassword = bcrypt.hashSync(args.password, salt);
+            return `${userTable}.name = '${args.name}' AND ${userTable}.password = '${encPassword}'`;
+          },
         },
       },
       resolve: (parent, args, context, resolveInfo) => {
