@@ -10,7 +10,7 @@ Navigate to the respective folder to learn more about each component (* Database
 #### Technologies and Libraries used
 `Node.js Express React GraphQL PostgreSQL Axios JoinMonster`
 
-## Live demo is under way  
+## [Live demo](https://vilgovskiy.github.io/kanban/)
 ## Screenshots
 #### Main view of the application: The Board
 ![Main board view](https://github.com/vilgovskiy/kanban/blob/master/Screenshots/kanban-board-view.JPG "Main view of the application: The Board")
