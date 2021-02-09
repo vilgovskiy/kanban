@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import "./Toolbar.css";
 
@@ -20,6 +20,14 @@ const Toolbar = (props: Props) => {
   const [boardSelection, setBoardSelection] = useState<number>(
     props.boards.length > 0 ? props.boards[0].id : -1
   );
+
+  useEffect(() => {
+    if (
+      props.boards.find((board) => board.id === boardSelection) === undefined
+    ) {
+      setBoardSelection(props.boards.length > 0 ? props.boards[0].id : -1);
+    }
+  }, [props.boards, boardSelection]);
 
   const [boardCreateInput, setBoardCreateInput] = useState<string>("");
 
