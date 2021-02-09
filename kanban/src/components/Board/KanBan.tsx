@@ -35,7 +35,12 @@ const KanBan: React.FC = () => {
           if (respData.data.tasks_on_board != null) {
             const tasks: { [id: number]: Task } = {};
             for (let i = 0; i < respData.data.tasks_on_board.length; i++) {
-              let task: Task = {...respData.data.tasks_on_board[i], description: decodeURIComponent(respData.data.tasks_on_board[i].description)};
+              let task: Task = {
+                ...respData.data.tasks_on_board[i],
+                description: decodeURIComponent(
+                  respData.data.tasks_on_board[i].description
+                ),
+              };
               tasks[task.id] = task;
             }
             tasksDispatch({ type: "TASKS_FETCH", tasks: tasks });
@@ -46,7 +51,7 @@ const KanBan: React.FC = () => {
     userState.activeBoard.id,
     userState.activeBoard.loaded,
     userState.boards,
-    tasksDispatch
+    tasksDispatch,
   ]);
 
   const loadBoardHandler = (boardSelection: number | null) => {
@@ -94,12 +99,34 @@ const KanBan: React.FC = () => {
       .catch((err) => console.log(err));
   };
 
+  const boardLeaveHandler = (board_id: number) => {
+    const data = {
+      query: `mutation{remove_user_from_board(board_id:${board_id}, user_id:${userState.userID}){id}}`,
+    };
+    axios
+      .post("/api", data)
+      .then((resp) => {
+        console.log(resp)
+        const respData = resp.data;
+        if (
+          respData.data.remove_user_from_board !== null &&
+          respData.data.remove_user_from_board.id === userState.userID
+        ) {
+          userDispatch({ type: "LEAVE_BOARD", board_id: board_id });
+        } else if (respData.errors) {
+          console.log(respData.errors[0].message);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   let board =
     userState.activeBoard.loaded && userState.boards !== null ? (
       <KanBanBoard
         userID={userState.userID}
         board={userState.boards[userState.activeBoard.id]}
         boardDelete={deleteBoardHandler}
+        boardLeave={boardLeaveHandler}
       />
     ) : null;
 

@@ -65,3 +65,20 @@
 .AccessControlButton:hover{
     opacity: 1;
 }
+
+.LeaveButton {
+    float: right;
+    height: 80%;
+    font-size: 20px;
+    margin: 5px 2% 5px 0;
+    padding: 0 8px 0 8px;
+    opacity: 0.5;
+}
+
+.LeaveButton>svg {
+    transform: translateY(7px);
+}
+
+.LeaveButton:hover {
+    opacity: 1;
+}

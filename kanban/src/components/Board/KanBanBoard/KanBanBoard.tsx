@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { TasksContext } from "../../../context/tasks-context";
 import TaskForm from "../../TaskForm/TaskForm";
 import KanbanColumn from "../KanBanColumn/KanBanColumn";
-import { MdAdd, MdDelete, MdPeople } from "react-icons/md";
+import { MdAdd, MdDelete, MdExitToApp, MdPeople } from "react-icons/md";
 
 import "./KanBanBoard.css";
 import AccessControl from "../../AccessControl/AccessControl";
@@ -23,6 +23,7 @@ interface Props {
   userID: number | null;
   board: BoardType;
   boardDelete: (board_id: number) => void;
+  boardLeave: (board_id: number) => void;
 }
 
 const columns: Column[] = [
@@ -33,7 +34,7 @@ const columns: Column[] = [
   { id: 4, name: "Completed" },
 ];
 
-const Board: React.FC<Props> = ({userID, board, boardDelete }) => {
+const Board: React.FC<Props> = ({ userID, board, boardDelete, boardLeave }) => {
   const { tasksState, tasksDispatch } = useContext(TasksContext);
   const [taskForm, setTaskForm] = useState<boolean>(false);
   const [accessControlActive, setAccessControlActive] = useState<boolean>(
@@ -70,8 +71,11 @@ const Board: React.FC<Props> = ({userID, board, boardDelete }) => {
       axios
         .post("/api", data)
         .then((resp) => {
-          const respdata = resp.data
-          if (respdata.data.move_task !== null && respdata.data.move_task.id === taskID){
+          const respdata = resp.data;
+          if (
+            respdata.data.move_task !== null &&
+            respdata.data.move_task.id === taskID
+          ) {
             tasksDispatch({ type: "TASK_UPDATE", taskID: taskID });
           }
         })
@@ -113,7 +117,13 @@ const Board: React.FC<Props> = ({userID, board, boardDelete }) => {
     />
   ) : null;
 
-  const accessControlElement = accessControlActive ? <AccessControl user_id={userID} board_id={board.id} closeHandler={closeAccesControlHandler} /> : null;
+  const accessControlElement = accessControlActive ? (
+    <AccessControl
+      user_id={userID}
+      board_id={board.id}
+      closeHandler={closeAccesControlHandler}
+    />
+  ) : null;
 
   const boardControls = (
     <div className="BoardControls">
@@ -139,7 +149,12 @@ const Board: React.FC<Props> = ({userID, board, boardDelete }) => {
             <MdPeople size={30} /> Access control
           </div>
         </React.Fragment>
-      ) : null}
+      ) : (
+        <div
+          className="General-btn Cancel-btn LeaveButton"
+          onClick={() => boardLeave(board.id)}
+        ><MdExitToApp size={30}/>Leave</div>
+      )}
       {newTaskForm}
       {accessControlElement}
     </div>
