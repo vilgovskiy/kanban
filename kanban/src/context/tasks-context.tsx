@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import tasksReducer from "../store/reducers/tasks-reducer";
+import tasksReducer from "../reducers/tasks-reducer";
 
 const initState = {
   loading: false,

@@ -1,5 +1,5 @@
 import React, {useReducer} from "react";
-import userReducer from "../store/reducers/user-reducer";
+import userReducer from "../reducers/user-reducer";
 
 interface Board {
   id: number;
