@@ -1,4 +1,5 @@
 /node_modules
 
-# Ignore config file
+# Ignore config files
 /db/config.js
+/secure
