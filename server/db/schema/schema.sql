@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
     user_id INT GENERATED ALWAYS AS IDENTITY,
     name VARCHAR (255) UNIQUE,
     password VARCHAR (255),
-    PRIMARY KEY(user_id)
+    PRIMARY KEY(user_id),
     UNIQUE (name, password)
 );
 
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     title VARCHAR (255),
     description VARCHAR (5000),
     severity INT,
-    board_column INT SET DEFAULT 0,
+    board_column INT DEFAULT 0,
     board INT,
     PRIMARY KEY(task_id),
     CONSTRAINT fk_board FOREIGN KEY(board) REFERENCES boards(board_id) ON DELETE CASCADE
