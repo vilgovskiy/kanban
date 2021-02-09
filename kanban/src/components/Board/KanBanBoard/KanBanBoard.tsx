@@ -3,7 +3,13 @@ import React, { useContext, useState } from "react";
 import { TasksContext } from "../../../context/tasks-context";
 import TaskForm from "../../TaskForm/TaskForm";
 import KanbanColumn from "../KanBanColumn/KanBanColumn";
-import { MdAdd, MdDelete, MdExitToApp, MdPeople } from "react-icons/md";
+import {
+  MdAdd,
+  MdDelete,
+  MdExitToApp,
+  MdPeople,
+  MdRefresh,
+} from "react-icons/md";
 
 import "./KanBanBoard.css";
 import AccessControl from "../../AccessControl/AccessControl";
@@ -24,6 +30,7 @@ interface Props {
   board: BoardType;
   boardDelete: (board_id: number) => void;
   boardLeave: (board_id: number) => void;
+  fetchTasks: () => void;
 }
 
 const columns: Column[] = [
@@ -34,7 +41,13 @@ const columns: Column[] = [
   { id: 4, name: "Completed" },
 ];
 
-const Board: React.FC<Props> = ({ userID, board, boardDelete, boardLeave }) => {
+const Board: React.FC<Props> = ({
+  userID,
+  board,
+  boardDelete,
+  boardLeave,
+  fetchTasks,
+}) => {
   const { tasksState, tasksDispatch } = useContext(TasksContext);
   const [taskForm, setTaskForm] = useState<boolean>(false);
   const [accessControlActive, setAccessControlActive] = useState<boolean>(
@@ -132,7 +145,12 @@ const Board: React.FC<Props> = ({ userID, board, boardDelete, boardLeave }) => {
         className="General-btn Confirm-btn AddTask"
         onClick={openNewTaskFormHandler}
       >
-        <MdAdd size={30} /> Add Task
+        <MdAdd size={30} />
+        Add Task
+      </div>
+      <div className="General-btn Util-btn AddTask" onClick={fetchTasks}>
+        <MdRefresh size={30} />
+        Refresh
       </div>
       {board.isOwner ? (
         <React.Fragment>
@@ -153,7 +171,10 @@ const Board: React.FC<Props> = ({ userID, board, boardDelete, boardLeave }) => {
         <div
           className="General-btn Cancel-btn LeaveButton"
           onClick={() => boardLeave(board.id)}
-        ><MdExitToApp size={30}/>Leave</div>
+        >
+          <MdExitToApp size={30} />
+          Leave
+        </div>
       )}
       {newTaskForm}
       {accessControlElement}

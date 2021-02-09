@@ -21,9 +21,8 @@ const KanBan: React.FC = () => {
     userDispatch({ type: "LOG_OUT" });
   };
 
-  useEffect(() => {
-    if (userState.activeBoard.loaded) {
-      tasksDispatch({ type: "TASKS_FETCH_START" });
+  const fetchTasks = () => {
+    tasksDispatch({ type: "TASKS_FETCH_START" });
       axios
         .get(
           `/api?query={tasks_on_board(board_id:${
@@ -46,6 +45,11 @@ const KanBan: React.FC = () => {
             tasksDispatch({ type: "TASKS_FETCH", tasks: tasks });
           }
         });
+  }
+
+  useEffect(() => {
+    if (userState.activeBoard.loaded) {
+      fetchTasks()
     }
   }, [
     userState.activeBoard.id,
@@ -127,6 +131,7 @@ const KanBan: React.FC = () => {
         board={userState.boards[userState.activeBoard.id]}
         boardDelete={deleteBoardHandler}
         boardLeave={boardLeaveHandler}
+        fetchTasks={fetchTasks}
       />
     ) : null;
 
