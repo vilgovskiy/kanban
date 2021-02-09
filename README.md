@@ -7,6 +7,9 @@ This is an example KanBan board application that consists of 3 components:
 
 Navigate to the respective folder to learn more about each component (* Database is located in server folder)
 
+#### Technologies and Libraries used
+`Node.js Express React GraphQL PostgreSQL Axios JoinMonster`
+
 ## Live demo is under way  
 ## Screenshots
 #### Main view of the application: The Board
